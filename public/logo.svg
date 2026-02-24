@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="ism-bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#059669"/>
+      <stop offset="1" stop-color="#0D9488"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#ism-bg)"/>
+  <g fill="#fff">
+    <!-- I: bold vertical bar -->
+    <rect x="84" y="136" width="48" height="240"/>
+    <!-- S: geometric block S -->
+    <path d="M152,136H260V184H196V232H260V376H152V328H216V280H152Z"/>
+    <!-- M: rectangle with V notch -->
+    <path fill-rule="evenodd" d="M280,136H428V376H280ZM324,136L354,320L384,136Z"/>
+  </g>
+</svg>
