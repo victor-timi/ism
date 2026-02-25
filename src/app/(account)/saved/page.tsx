@@ -1,26 +1,49 @@
-import type { Metadata } from "next";
-import { HiBookmark } from "react-icons/hi2";
-import { Card, CardContent } from "@/components/ui/card";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Saved Items",
-};
+import { useState } from "react";
+import { HiBookmark, HiBriefcase, HiHome, HiTag } from "react-icons/hi2";
+import { PremiumEmptyState } from "@/components/ui/premium-empty-state";
+
+const filters = [
+  { label: "All", value: "all" },
+  { label: "Jobs", value: "jobs", icon: HiBriefcase },
+  { label: "Housing", value: "housing", icon: HiHome },
+  { label: "Discounts", value: "discounts", icon: HiTag },
+];
 
 export default function SavedPage() {
-  return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold">Saved Items</h1>
-      <p className="text-muted-foreground mt-2">Your bookmarked listings</p>
+  const [active, setActive] = useState("all");
 
-      <Card className="mt-8">
-        <CardContent className="flex flex-col items-center py-16 text-center">
-          <HiBookmark className="text-muted-foreground h-12 w-12" />
-          <h3 className="mt-4 text-lg font-semibold">No saved items yet</h3>
-          <p className="text-muted-foreground mt-2 max-w-sm text-sm">
-            Browse listings in the Hub and click the bookmark icon to save them here.
-          </p>
-        </CardContent>
-      </Card>
+  return (
+    <div>
+      {/* Filter pills */}
+      <div className="flex gap-2">
+        {filters.map((filter) => (
+          <button
+            key={filter.value}
+            onClick={() => setActive(filter.value)}
+            className={`flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-xs font-medium transition-all ${
+              active === filter.value
+                ? "border-[var(--ism-accent)] bg-[var(--ism-accent)]/10 text-[var(--ism-accent)]"
+                : "border-[var(--ism-border)] text-[var(--ism-fg-muted)] hover:border-[var(--ism-accent)]/30 hover:text-[var(--ism-fg)]"
+            }`}
+          >
+            {filter.icon && <filter.icon className="h-3.5 w-3.5" />}
+            {filter.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Empty state */}
+      <div className="mt-8">
+        <PremiumEmptyState
+          icon={HiBookmark}
+          title="No saved items yet"
+          description="Browse listings in the Hub and click the bookmark icon to save them here for later."
+          actionLabel="Browse the Hub"
+          actionHref="/hub"
+        />
+      </div>
     </div>
   );
 }

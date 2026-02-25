@@ -1,4 +1,6 @@
-import type { SVGProps } from "react";
+"use client";
+
+import { useId, type SVGProps } from "react";
 
 interface LogoProps extends SVGProps<SVGSVGElement> {
   size?: number;
@@ -9,6 +11,8 @@ interface LogoProps extends SVGProps<SVGSVGElement> {
  * Movement, growth, and aspiration.
  */
 export function Logo({ size = 32, className, ...props }: LogoProps) {
+  const gradId = useId();
+
   return (
     <svg
       viewBox="0 0 32 32"
@@ -20,7 +24,13 @@ export function Logo({ size = 32, className, ...props }: LogoProps) {
       role="img"
       {...props}
     >
-      <rect width="32" height="32" rx="8" fill="var(--ism-accent)" />
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#059669" />
+          <stop offset="100%" stopColor="#065f46" />
+        </linearGradient>
+      </defs>
+      <rect width="32" height="32" rx="8" fill={`url(#${gradId})`} />
       <path
         d="M7 24L12.5 8L16 18L19.5 8L25 24"
         stroke="white"

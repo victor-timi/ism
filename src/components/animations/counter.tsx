@@ -24,12 +24,17 @@ export function Counter({
   className,
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "0px" });
+  const isInView = useInView(ref, { once: false, margin: "0px" });
   const [display, setDisplay] = useState("0");
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView) {
+      // Reset when leaving view so animation replays on re-entry
+      setDone(false);
+      setDisplay("0");
+      return;
+    }
 
     const controls = animate(0, target, {
       duration,

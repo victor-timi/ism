@@ -6,134 +6,11 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "motion/react";
 import { HiOutlineBars3, HiXMark } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/ui/logo";
+import { ChevronDown, ChevronRight } from "@/components/icons";
+import { navItems, accountLinks } from "./data";
+import { mobileItem } from "./variants";
+import { LogoTilt } from "./logo-tilt";
 
-/* ═══════════════════════════════════════════
-   Navigation data
-   ═══════════════════════════════════════════ */
-interface NavChild {
-  label: string;
-  href: string;
-  description: string;
-}
-
-interface NavItem {
-  label: string;
-  href: string;
-  headline?: string;
-  children?: NavChild[];
-}
-
-const navItems: NavItem[] = [
-  {
-    label: "Hub",
-    href: "/hub",
-    headline: "Find what you need\nas a student in Australia",
-    children: [
-      {
-        label: "Part-Time Jobs",
-        href: "/hub?tab=jobs",
-        description: "Casual & part-time work opportunities",
-      },
-      {
-        label: "Accommodation",
-        href: "/hub?tab=housing",
-        description: "Share housing & flatmate listings",
-      },
-      {
-        label: "Student Discounts",
-        href: "/hub?tab=discounts",
-        description: "Verified deals & savings for students",
-      },
-    ],
-  },
-  {
-    label: "Resources",
-    href: "/about",
-    headline: "Everything you need to\nstay connected and informed",
-    children: [
-      {
-        label: "About ISM",
-        href: "/about",
-        description: "Our mission & story",
-      },
-      {
-        label: "Blog",
-        href: "/blog",
-        description: "Guides, tips & student news",
-      },
-      {
-        label: "Community",
-        href: "/community",
-        description: "Connect with other students",
-      },
-    ],
-  },
-  { label: "Contact", href: "/contact" },
-];
-
-const accountLinks: NavChild[] = [
-  { label: "Saved Items", href: "/saved", description: "Your bookmarked listings" },
-  { label: "Alerts", href: "/alerts", description: "Notification preferences" },
-  { label: "Settings", href: "/settings", description: "Account & profile" },
-];
-
-/* ═══════════════════════════════════════════
-   Chevron icons
-   ═══════════════════════════════════════════ */
-function ChevronDown({ open }: { open: boolean }) {
-  return (
-    <svg
-      className="size-3 transition-transform duration-200"
-      style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
-      viewBox="0 0 12 12"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 4.5L6 7.5L9 4.5" />
-    </svg>
-  );
-}
-
-function ChevronRight({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className ?? "size-4"}
-      viewBox="0 0 12 12"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M4.5 3L7.5 6L4.5 9" />
-    </svg>
-  );
-}
-
-/* ═══════════════════════════════════════════
-   Mobile menu animations
-   ═══════════════════════════════════════════ */
-const mobileItem = {
-  hidden: { y: 30, opacity: 0 },
-  visible: (i: number) => ({
-    y: 0,
-    opacity: 1,
-    transition: {
-      delay: 0.08 + i * 0.06,
-      duration: 0.45,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  }),
-  exit: { y: -16, opacity: 0, transition: { duration: 0.15 } },
-};
-
-/* ═══════════════════════════════════════════
-   Navigation
-   ═══════════════════════════════════════════ */
 export function Navigation() {
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -174,28 +51,26 @@ export function Navigation() {
   return (
     <>
       <motion.nav
-        className="fixed top-0 right-0 left-0 z-50 transition-colors duration-300"
+        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
+          activeItem || activeDropdown === "Account"
+            ? "rounded-b-2xl"
+            : ""
+        }`}
         style={{
           backgroundColor: scrolled || activeDropdown ? "var(--ism-bg)" : "transparent",
           boxShadow:
-            scrolled && !activeDropdown
-              ? "0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.06)"
-              : "none",
+            activeItem || activeDropdown === "Account"
+              ? "0 8px 32px -4px rgba(0,0,0,0.2), 0 2px 8px -2px rgba(0,0,0,0.12)"
+              : scrolled
+                ? "0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.06)"
+                : "none",
+          overflow: activeItem || activeDropdown === "Account" ? "hidden" : undefined,
         }}
         onMouseLeave={closeDropdown}
       >
         <div className="flex h-16 items-center justify-between px-6 lg:h-20 lg:px-12 xl:px-16">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="relative z-50 flex items-center gap-2.5"
-            onMouseEnter={closeDropdown}
-          >
-            <Logo size={28} />
-            <span className="text-lg font-bold tracking-tight" style={{ color: "var(--ism-fg)" }}>
-              ISM
-            </span>
-          </Link>
+          {/* Logo with 3D tilt */}
+          <LogoTilt onHover={closeDropdown} />
 
           {/* Desktop nav */}
           <div className="hidden items-center gap-8 md:flex lg:gap-10">
@@ -260,12 +135,12 @@ export function Navigation() {
           </button>
         </div>
 
-        {/* ── Full-width dropdown panel ── */}
+        {/* Full-width dropdown panel */}
         <AnimatePresence>
           {(activeItem || activeDropdown === "Account") && (
             <motion.div
               key={activeDropdown}
-              className="hidden overflow-hidden border-t border-[var(--ism-border)] bg-[var(--ism-bg)] md:block"
+              className="hidden overflow-hidden border-t border-[var(--ism-border)] md:block"
               initial={{ height: 0 }}
               animate={{ height: "auto" }}
               exit={{ height: 0 }}
@@ -320,13 +195,25 @@ export function Navigation() {
                   )}
                 </div>
               </div>
-
-              {/* Bottom shadow line */}
-              <div className="h-px bg-[var(--ism-border)]" />
             </motion.div>
           )}
         </AnimatePresence>
       </motion.nav>
+
+      {/* Page overlay when dropdown is open (Google-style dim) */}
+      <AnimatePresence>
+        {(activeItem || activeDropdown === "Account") && (
+          <motion.div
+            className="fixed inset-0 z-40 hidden md:block"
+            style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setActiveDropdown(null)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Mobile overlay */}
       <AnimatePresence>

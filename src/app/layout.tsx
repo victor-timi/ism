@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Google_Sans_Flex } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/providers";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
+import { GlobalEffects } from "@/components/layout/global-effects";
 
-const googleSansFlex = Google_Sans_Flex({
-  variable: "--font-google-sans-flex",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
 });
 
@@ -32,8 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${googleSansFlex.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${manrope.variable} ${geistMono.variable} font-sans antialiased`}>
         <Providers>
+          <GlobalEffects />
           <Navigation />
           <main>{children}</main>
           <Footer />

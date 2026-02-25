@@ -38,7 +38,7 @@ export function ScrollReveal({
       variants={revealVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: false, margin: "-80px" }}
       custom={direction}
       transition={{ delay }}
     >
