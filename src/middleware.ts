@@ -5,7 +5,7 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
 
   // Protect account routes
-  if (pathname.startsWith("/saved") || pathname.startsWith("/alerts") || pathname.startsWith("/settings")) {
+  if (pathname.startsWith("/saved") || pathname.startsWith("/alerts")) {
     if (!req.auth) {
       const signInUrl = new URL("/sign-in", req.url);
       signInUrl.searchParams.set("callbackUrl", pathname);
@@ -26,5 +26,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/saved/:path*", "/alerts/:path*", "/settings/:path*", "/studio/:path*"],
+  matcher: ["/saved/:path*", "/alerts/:path*", "/studio/:path*"],
 };

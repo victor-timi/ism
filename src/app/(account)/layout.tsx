@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { HiBookmark, HiBell, HiCog6Tooth } from "react-icons/hi2";
-import { ease, labelReveal } from "@/components/animations/variants";
+import { labelReveal } from "@/components/animations/variants";
 import { RevealHeading } from "@/components/home/value-proposition/reveal-heading";
 
 const navItems = [

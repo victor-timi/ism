@@ -5,11 +5,7 @@ import { motion } from "motion/react";
 import { ICON_COLOR, heroIconData } from "./data";
 import { HeroIconDropdown } from "./hero-icon-dropdown";
 
-export function HeroIllustration({
-  containerRef,
-}: {
-  containerRef?: React.RefObject<HTMLElement | null>;
-}) {
+export function HeroIllustration() {
   const orbitsRef = useRef<HTMLDivElement>(null);
   const jobsRef = useRef<HTMLDivElement>(null);
   const housingRef = useRef<HTMLDivElement>(null);

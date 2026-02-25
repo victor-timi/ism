@@ -22,8 +22,6 @@ import {
 } from "@/components/ui/select";
 import { FaqItem } from "@/components/home/faq/faq-item";
 import {
-  ease,
-  bodyFade,
   cardVariants,
   labelReveal,
 } from "@/components/animations/variants";

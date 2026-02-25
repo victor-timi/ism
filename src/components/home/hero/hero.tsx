@@ -41,7 +41,7 @@ export function Hero() {
       ref={sectionRef}
       className="ism-grain relative flex min-h-svh flex-col overflow-hidden bg-[var(--ism-bg)]"
     >
-      <HeroIllustration containerRef={sectionRef} />
+      <HeroIllustration />
 
       {/* Ambient gradient washes */}
       <div className="pointer-events-none absolute inset-0 z-0">

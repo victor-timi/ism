@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import { motion } from "motion/react";
-import { HiBriefcase, HiHome, HiTag, HiShieldCheck, HiUserGroup, HiSparkles, HiBolt, HiGlobeAlt } from "react-icons/hi2";
+import { HiBriefcase, HiHome, HiTag } from "react-icons/hi2";
 import { Logo } from "@/components/ui/logo";
 import { Counter } from "@/components/animations/counter";
 import { ease, labelReveal, bodyFade } from "@/components/animations/variants";
@@ -18,7 +18,6 @@ interface VariantContent {
     label: string;
     format: (n: number) => string;
   }[];
-  features: { icon: React.ElementType; label: string; desc: string }[];
 }
 
 const signInContent: VariantContent = {
@@ -51,11 +50,6 @@ const signInContent: VariantContent = {
       format: (n: number) => Math.round(n) + "%",
     },
   ],
-  features: [
-    { icon: HiBolt, label: "Instant access", desc: "Resume your search" },
-    { icon: HiShieldCheck, label: "Secure", desc: "Your data is safe" },
-    { icon: HiSparkles, label: "Personalized", desc: "Tailored for you" },
-  ],
 };
 
 const signUpContent: VariantContent = {
@@ -87,11 +81,6 @@ const signUpContent: VariantContent = {
       label: "Forever",
       format: () => "Free",
     },
-  ],
-  features: [
-    { icon: HiBriefcase, label: "Part-time jobs", desc: "Student-friendly roles" },
-    { icon: HiHome, label: "Share housing", desc: "Verified listings" },
-    { icon: HiTag, label: "Discounts", desc: "Exclusive student deals" },
   ],
 };
 
@@ -306,46 +295,6 @@ function NetworkDiagram() {
   );
 }
 
-/* ─── Feature pill ─── */
-function FeaturePill({ icon: Icon, label, desc, delay }: {
-  icon: React.ElementType;
-  label: string;
-  desc: string;
-  delay: number;
-}) {
-  return (
-    <motion.div
-      className="flex items-center gap-3 rounded-xl border border-white/[0.08] px-4 py-3"
-      style={{
-        background:
-          "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
-        backdropFilter: "blur(12px)",
-      }}
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6, ease, delay }}
-      whileHover={{
-        borderColor: "rgba(16,185,129,0.25)",
-        x: 4,
-        transition: { duration: 0.25 },
-      }}
-    >
-      <div
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-        style={{
-          background: "linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(16,185,129,0.05) 100%)",
-        }}
-      >
-        <Icon className="h-4 w-4 text-[var(--ism-accent)]" />
-      </div>
-      <div>
-        <p className="text-sm font-semibold text-white">{label}</p>
-        <p className="text-[11px] text-white/40">{desc}</p>
-      </div>
-    </motion.div>
-  );
-}
-
 export function AuthLayout({
   variant = "sign-up",
   children,
@@ -441,42 +390,32 @@ export function AuthLayout({
         </div>
 
         {/* Middle: Interactive network diagram with parallax */}
-        <div className="relative z-10 my-6 flex-1">
+        <div className="relative z-10 my-4 flex-1 min-h-0">
           <NetworkDiagram />
         </div>
 
-        {/* Feature pills — different per variant */}
-        <div className="relative z-10 shrink-0 space-y-2 mb-5">
-          {content.features.map((feat, i) => (
-            <FeaturePill
-              key={feat.label}
-              icon={feat.icon}
-              label={feat.label}
-              desc={feat.desc}
-              delay={0.8 + i * 0.12}
-            />
-          ))}
-        </div>
-
-        {/* Bottom: Stat pills */}
-        <div className="relative z-10 shrink-0 flex gap-3">
+        {/* Bottom: Stats bar — full width */}
+        <motion.div
+          className="relative z-10 shrink-0 flex items-center rounded-xl border border-white/[0.08]"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+            backdropFilter: "blur(12px)",
+          }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease, delay: 0.6 }}
+          whileHover={{
+            borderColor: "rgba(16,185,129,0.25)",
+            transition: { duration: 0.25 },
+          }}
+        >
           {content.stats.map((stat, i) => (
-            <motion.div
+            <div
               key={stat.label}
-              className="rounded-xl border border-white/[0.08] px-5 py-3.5"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
-                backdropFilter: "blur(12px)",
-              }}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease, delay: 0.6 + i * 0.12 }}
-              whileHover={{
-                borderColor: "rgba(16,185,129,0.25)",
-                y: -2,
-                transition: { duration: 0.25 },
-              }}
+              className={`flex-1 px-5 py-4 ${
+                i < content.stats.length - 1 ? "border-r border-white/[0.08]" : ""
+              }`}
             >
               <Counter
                 value={stat.value}
@@ -486,13 +425,15 @@ export function AuthLayout({
                 duration={2}
               />
               <p className="mt-0.5 text-xs text-white/40">{stat.label}</p>
-            </motion.div>
+            </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Right Panel — form */}
-      <div className="flex flex-1 items-center justify-center bg-[var(--ism-bg)] px-6 py-12 lg:px-12">
+      <div className="relative flex flex-1 items-center justify-center bg-[var(--ism-bg)] px-6 py-12 lg:px-12 dark:bg-[var(--ism-bg-elevated)]">
+        {/* Subtle left border accent in dark mode */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 hidden w-px dark:block" style={{ background: "linear-gradient(to bottom, transparent, rgba(16,185,129,0.15), transparent)" }} />
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">

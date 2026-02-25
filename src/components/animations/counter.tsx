@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useInView, animate } from "motion/react";
 
 interface CounterProps {
@@ -25,14 +25,16 @@ export function Counter({
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: false, margin: "0px" });
-  const [display, setDisplay] = useState("0");
-  const [done, setDone] = useState(false);
+  const doneRef = useRef(false);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
     if (!isInView) {
       // Reset when leaving view so animation replays on re-entry
-      setDone(false);
-      setDisplay("0");
+      doneRef.current = false;
+      el.textContent = "0";
       return;
     }
 
@@ -41,14 +43,14 @@ export function Counter({
       ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
       onUpdate(v) {
         if (format) {
-          setDisplay(format(v));
+          el.textContent = format(v);
         } else {
-          setDisplay(Math.round(v).toLocaleString());
+          el.textContent = Math.round(v).toLocaleString();
         }
       },
       onComplete() {
-        setDisplay(value);
-        setDone(true);
+        el.textContent = value;
+        doneRef.current = true;
       },
     });
 
@@ -57,7 +59,7 @@ export function Counter({
 
   return (
     <span ref={ref} className={className}>
-      {done ? value : display}
+      {value}
     </span>
   );
 }

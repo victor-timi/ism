@@ -27,9 +27,12 @@ export function ForumFeed({
 
   const userName = session?.user?.name?.split(" ")[0] || "Guest";
   const userInitial = userName[0].toUpperCase();
+  const [guestColorIndex] = useState(() =>
+    Math.floor(Math.random() * GUEST_COLORS.length)
+  );
   const userColor = session?.user?.name
     ? "bg-emerald-500/15 text-emerald-500"
-    : GUEST_COLORS[Math.floor(Math.random() * GUEST_COLORS.length)];
+    : GUEST_COLORS[guestColorIndex];
 
   const handleSend = useCallback(
     (text: string) => {

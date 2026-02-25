@@ -71,7 +71,7 @@ export function Footer() {
         transition={{ duration: 1.2, ease }}
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 lg:px-12 lg:py-20 xl:px-16">
+      <div className="relative z-10 px-6 py-16 lg:px-12 lg:py-20 xl:px-16">
         {/* Top: Logo + Newsletter */}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-sm">

@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { motion } from "motion/react";
-import { HiUser, HiSun, HiMoon, HiComputerDesktop } from "react-icons/hi2";
+import { HiUser, HiSun, HiMoon } from "react-icons/hi2";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
