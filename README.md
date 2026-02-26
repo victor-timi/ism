@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ISM — International Students Movement
+
+One platform for jobs, housing, and student discounts for international students in Australia.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router, TypeScript)
+- **Styling:** Tailwind CSS v4 + shadcn/ui
+- **Database:** Neon PostgreSQL + Prisma 6
+- **Auth:** Auth.js v5 (Credentials provider)
+- **CMS:** Sanity v5 (embedded studio at `/studio`)
+- **Testing:** Vitest 4
+- **Deployment:** Northflank (Docker), GitHub Actions CI
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Install dependencies
+pnpm install
+
+# Copy environment variables
+cp .env.example .env.local
+# Fill in DATABASE_URL, AUTH_SECRET, Sanity credentials (see docs/SETUP_AND_DEPLOYMENT.md)
+
+# Generate Prisma client
+pnpm prisma generate
+
+# Run database migrations
+pnpm prisma migrate dev
+
+# Start development server
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── (marketing)/     # Home, About, Blog, Contact, etc.
+│   ├── (auth)/          # Sign In, Sign Up
+│   ├── (account)/       # Saved Items, Alerts, Settings (protected)
+│   ├── (hub)/           # Student Opportunity Hub
+│   └── api/             # API routes (auth, listings)
+├── components/
+│   ├── ui/              # shadcn/ui primitives
+│   ├── layout/          # Navigation, Footer, Providers
+│   ├── home/            # Homepage sections
+│   ├── auth/            # Auth layout
+│   └── hub/             # Hub components
+├── lib/                 # Auth config, hooks, utilities
+└── middleware.ts        # Route protection
 
-## Learn More
+sanity/
+├── schemas/             # CMS content types
+└── lib/                 # Client + GROQ queries
 
-To learn more about Next.js, take a look at the following resources:
+prisma/
+└── schema.prisma        # Database models
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command | Description |
+|---|---|
+| `pnpm dev` | Start dev server (Turbopack) |
+| `pnpm build` | Production build |
+| `pnpm lint` | ESLint (zero warnings) |
+| `pnpm type-check` | TypeScript type checking |
+| `pnpm test` | Run Vitest tests |
+| `pnpm prisma studio` | Open Prisma database browser |
 
-## Deploy on Vercel
+## Documentation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Setup & Deployment](docs/SETUP_AND_DEPLOYMENT.md) — Sanity, Northflank, env vars, CI/CD
+- [Milestones](docs/MILESTONES.md) — Deliverables, acceptance criteria, and progress
+- [Client Brief](docs/CLIENT_BRIEF.md) — Hub data sources
+- [Brand Guidelines](docs/BRAND.md) — Colors, typography, tone
+- [Project Brief](docs/project-brief.md) — Project overview

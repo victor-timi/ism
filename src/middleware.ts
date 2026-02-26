@@ -13,18 +13,9 @@ export default auth((req) => {
     }
   }
 
-  // Protect Sanity Studio — require authenticated user
-  if (pathname.startsWith("/studio")) {
-    if (!req.auth) {
-      const signInUrl = new URL("/sign-in", req.url);
-      signInUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(signInUrl);
-    }
-  }
-
   return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/saved/:path*", "/alerts/:path*", "/studio/:path*"],
+  matcher: ["/saved/:path*", "/alerts/:path*"],
 };

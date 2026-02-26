@@ -3,8 +3,7 @@ import { Manrope } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/providers";
-import { Navigation } from "@/components/layout/navigation";
-import { Footer } from "@/components/layout/footer";
+import { SiteShell } from "@/components/layout/site-shell";
 import { GlobalEffects } from "@/components/layout/global-effects";
 
 const manrope = Manrope({
@@ -43,9 +42,7 @@ export default function RootLayout({
       <body className={`${manrope.variable} ${geistMono.variable} font-sans antialiased`}>
         <Providers>
           <GlobalEffects />
-          <Navigation />
-          <main>{children}</main>
-          <Footer />
+          <SiteShell>{children}</SiteShell>
         </Providers>
       </body>
     </html>
