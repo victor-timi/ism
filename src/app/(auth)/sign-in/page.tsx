@@ -1,13 +1,24 @@
 "use client";
 
-import { Suspense, useCallback } from "react";
+import { Suspense } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAuthSubmit } from "@/lib/hooks/use-auth-submit";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { useAppMutation } from "@/lib/hooks/use-app-mutation";
+import { signInSchema, type SignInValues } from "@/lib/validations";
+import { ROUTES } from "@/lib/routes";
 import { AuthLayout } from "@/components/auth/auth-layout";
 
 function SignInForm() {
@@ -15,72 +26,92 @@ function SignInForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-  const onSubmit = useCallback(
-    async (formData: FormData) => {
+  const form = useForm<SignInValues>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: { email: "", password: "" },
+  });
+
+  const { mutate, isPending, errorMessage } = useAppMutation<SignInValues>({
+    mutationFn: async (data) => {
       const result = await signIn("credentials", {
-        email: formData.get("email") as string,
-        password: formData.get("password") as string,
+        email: data.email,
+        password: data.password,
         redirect: false,
       });
 
       if (result?.error) {
-        return { error: "Invalid email or password" };
+        throw new Error("Invalid email or password");
       }
-
+    },
+    onSuccess: () => {
       router.push(callbackUrl);
       router.refresh();
-      return {};
     },
-    [router, callbackUrl],
-  );
-
-  const { error, loading, handleSubmit } = useAuthSubmit({ onSubmit });
+  });
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
-          {error}
-        </div>
-      )}
-      <div className="space-y-2">
-        <Label htmlFor="email" className="text-[var(--ism-fg)]">
-          Email
-        </Label>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          placeholder="you@university.edu.au"
-          className="h-11"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="password" className="text-[var(--ism-fg)]">
-          Password
-        </Label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-          placeholder="Your password"
-          className="h-11"
-        />
-      </div>
-      <Button
-        type="submit"
-        variant="ism"
-        size="lg"
-        className="w-full"
-        disabled={loading}
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit((data) => mutate(data))}
+        className="space-y-5"
       >
-        {loading ? "Signing in..." : "Sign In"}
-      </Button>
-    </form>
+        {errorMessage && (
+          <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
+            {errorMessage}
+          </div>
+        )}
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[var(--ism-fg)]">Email</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="email"
+                  autoComplete="email"
+                  placeholder="you@university.edu.au"
+                  className="h-11"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[var(--ism-fg)]">Password</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder="Your password"
+                  className="h-11"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="submit"
+          variant="ism"
+          size="lg"
+          className="w-full"
+          disabled={isPending}
+        >
+          {isPending ? "Signing in..." : "Sign In"}
+        </Button>
+      </form>
+    </Form>
   );
 }
 
@@ -105,7 +136,7 @@ export default function SignInPage() {
       <p className="mt-6 text-center text-sm text-[var(--ism-fg-muted)]">
         Don&apos;t have an account?{" "}
         <Link
-          href="/sign-up"
+          href={ROUTES.signUp}
           className="font-medium text-[var(--ism-accent)] hover:underline"
         >
           Sign up

@@ -2,28 +2,14 @@
 
 import { useSession } from "next-auth/react";
 import { motion } from "motion/react";
-import { HiUser, HiSun, HiMoon } from "react-icons/hi2";
+import { HiUser } from "react-icons/hi2";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { cardVariants } from "@/components/animations/variants";
 import { useTheme } from "@/components/layout/theme-provider";
-
-const themeOptions = [
-  {
-    value: "light" as const,
-    label: "Light",
-    icon: HiSun,
-    description: "Warm cream tones",
-  },
-  {
-    value: "dark" as const,
-    label: "Dark",
-    icon: HiMoon,
-    description: "Easy on the eyes",
-  },
-];
+import { themeOptions } from "./data";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
@@ -88,7 +74,7 @@ export default function SettingsPage() {
           </p>
           <Separator className="my-5" />
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {themeOptions.map((option) => {
               const isActive = theme === option.value;
               return (
@@ -106,7 +92,9 @@ export default function SettingsPage() {
                     className={`flex h-20 w-full items-center justify-center rounded-lg ${
                       option.value === "dark"
                         ? "bg-[#0A1210]"
-                        : "bg-[#FAFAF7]"
+                        : option.value === "system"
+                          ? "bg-gradient-to-r from-[#FAFAF7] to-[#0A1210]"
+                          : "bg-[#FAFAF7]"
                     }`}
                   >
                     <div className="flex flex-col items-center gap-1.5">
@@ -114,7 +102,9 @@ export default function SettingsPage() {
                         className={`h-6 w-6 ${
                           option.value === "dark"
                             ? "text-emerald-400"
-                            : "text-emerald-700"
+                            : option.value === "system"
+                              ? "text-emerald-500"
+                              : "text-emerald-700"
                         }`}
                       />
                       <div className="flex gap-1">
@@ -122,14 +112,18 @@ export default function SettingsPage() {
                           className={`h-1.5 w-6 rounded-full ${
                             option.value === "dark"
                               ? "bg-white/20"
-                              : "bg-[#1A1A2E]/10"
+                              : option.value === "system"
+                                ? "bg-white/30"
+                                : "bg-[#1A1A2E]/10"
                           }`}
                         />
                         <div
                           className={`h-1.5 w-4 rounded-full ${
                             option.value === "dark"
                               ? "bg-white/10"
-                              : "bg-[#1A1A2E]/5"
+                              : option.value === "system"
+                                ? "bg-white/15"
+                                : "bg-[#1A1A2E]/5"
                           }`}
                         />
                       </div>

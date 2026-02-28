@@ -2,11 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import {
-  HiChatBubbleLeftRight,
-  HiUserGroup,
-  HiCalendarDays,
-} from "react-icons/hi2";
 import { PageHero } from "@/components/layout/page-hero";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
@@ -18,51 +13,8 @@ import {
   bodyFade,
 } from "@/components/animations/variants";
 import { RevealHeading } from "@/components/home/value-proposition/reveal-heading";
-
-const features = [
-  {
-    icon: HiChatBubbleLeftRight,
-    title: "Forum Discussions",
-    description:
-      "Ask questions, share advice, and connect with students across Australia in our moderated forum.",
-    gradient: "from-emerald-500/20 via-emerald-400/10 to-transparent",
-  },
-  {
-    icon: HiUserGroup,
-    title: "Local Groups",
-    description:
-      "Find students in your city, campus, or course. Join local groups to meet people who get it.",
-    gradient: "from-sky-500/20 via-cyan-400/10 to-transparent",
-  },
-  {
-    icon: HiCalendarDays,
-    title: "Events",
-    description:
-      "Discover student meetups, career fairs, cultural events, and social gatherings near you.",
-    gradient: "from-violet-500/20 via-purple-400/10 to-transparent",
-  },
-];
-
-const communityStats = [
-  {
-    value: "833,000+",
-    target: 833000,
-    label: "Students",
-    format: (n: number) => Math.round(n).toLocaleString() + "+",
-  },
-  {
-    value: "247",
-    target: 247,
-    label: "Online now",
-    format: (n: number) => Math.round(n).toString(),
-  },
-  {
-    value: "14",
-    target: 14,
-    label: "New posts today",
-    format: (n: number) => Math.round(n).toString(),
-  },
-];
+import { ROUTES } from "@/lib/routes";
+import { features, communityStats } from "./data";
 
 export default function CommunityPage() {
   return (
@@ -170,7 +122,7 @@ export default function CommunityPage() {
             transition={{ duration: 0.5, ease, delay: 0.6 }}
           >
             <Button variant="ism" size="lg" asChild>
-              <Link href="/forum">Visit the Forum</Link>
+              <Link href={ROUTES.forum}>Visit the Forum</Link>
             </Button>
           </motion.div>
         </div>

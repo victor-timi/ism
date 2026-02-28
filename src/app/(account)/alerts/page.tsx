@@ -12,13 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PremiumEmptyState } from "@/components/ui/premium-empty-state";
 import { cardVariants } from "@/components/animations/variants";
-
-const exampleAlert = {
-  category: "Jobs",
-  location: "Sydney, NSW",
-  keywords: "barista, cafe, part-time",
-  frequency: "Daily",
-};
+import { exampleAlert } from "./data";
 
 export default function AlertsPage() {
   return (

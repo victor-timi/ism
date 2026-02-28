@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { HiBriefcase, HiHome, HiTag } from "react-icons/hi2";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { FilterBar } from "@/components/hub/filter-bar";
@@ -10,27 +9,7 @@ import { ListingCard } from "@/components/hub/listing-card";
 import { mockListings } from "@/components/hub/mock-data";
 import { ease, labelReveal, bodyFade } from "@/components/animations/variants";
 import { RevealHeading } from "@/components/home/value-proposition/reveal-heading";
-
-const tabs = [
-  {
-    value: "jobs",
-    label: "Jobs",
-    icon: HiBriefcase,
-    count: mockListings.filter((l) => l.category === "jobs").length,
-  },
-  {
-    value: "housing",
-    label: "Housing",
-    icon: HiHome,
-    count: mockListings.filter((l) => l.category === "housing").length,
-  },
-  {
-    value: "discounts",
-    label: "Discounts",
-    icon: HiTag,
-    count: mockListings.filter((l) => l.category === "discounts").length,
-  },
-];
+import { tabs } from "./data";
 
 export default function HubPage() {
   const [activeTab, setActiveTab] = useState("jobs");

@@ -1,13 +1,14 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import { ROUTES } from "@/lib/routes";
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
 
   // Protect account routes
-  if (pathname.startsWith("/saved") || pathname.startsWith("/alerts")) {
+  if (pathname.startsWith(ROUTES.saved) || pathname.startsWith(ROUTES.alerts)) {
     if (!req.auth) {
-      const signInUrl = new URL("/sign-in", req.url);
+      const signInUrl = new URL(ROUTES.signIn, req.url);
       signInUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(signInUrl);
     }

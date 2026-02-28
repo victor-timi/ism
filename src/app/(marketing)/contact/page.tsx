@@ -1,17 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "motion/react";
-import {
-  HiEnvelope,
-  HiClock,
-  HiChatBubbleLeftRight,
-} from "react-icons/hi2";
+import { HiEnvelope } from "react-icons/hi2";
 import { PageHero } from "@/components/layout/page-hero";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -20,60 +17,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { FaqItem } from "@/components/home/faq/faq-item";
 import {
   cardVariants,
   labelReveal,
 } from "@/components/animations/variants";
 import { RevealHeading } from "@/components/home/value-proposition/reveal-heading";
-
-const infoCards = [
-  {
-    icon: HiEnvelope,
-    title: "Email Us",
-    description: "hello@ism.org.au",
-    detail: "We'll get back to you within 24 hours.",
-    gradient: "from-emerald-500/20 via-emerald-400/10 to-transparent",
-  },
-  {
-    icon: HiChatBubbleLeftRight,
-    title: "Social",
-    description: "@ismaustralia",
-    detail: "Follow us on Instagram, Twitter, and LinkedIn.",
-    gradient: "from-sky-500/20 via-cyan-400/10 to-transparent",
-  },
-  {
-    icon: HiClock,
-    title: "Response Time",
-    description: "Within 24 hours",
-    detail: "Mon–Fri, 9 AM – 5 PM AEST.",
-    gradient: "from-violet-500/20 via-purple-400/10 to-transparent",
-  },
-];
-
-const contactFaqs = [
-  {
-    number: "01",
-    question: "How do I report a fraudulent listing?",
-    answer:
-      "Email us at report@ism.org.au with the listing URL and details. We review all reports within 24 hours and remove confirmed fraudulent listings immediately.",
-  },
-  {
-    number: "02",
-    question: "Can I partner with ISM?",
-    answer:
-      "We're always looking for partnerships with universities, employers, and brands that want to reach international students. Reach out at partners@ism.org.au.",
-  },
-  {
-    number: "03",
-    question: "I'm a student. Can I contribute?",
-    answer:
-      "Absolutely! We're built by students. Whether you want to write for our blog, moderate the forum, or contribute code — email us at contribute@ism.org.au.",
-  },
-];
+import { useAppMutation } from "@/lib/hooks/use-app-mutation";
+import {
+  contactSchema,
+  CONTACT_SUBJECTS,
+  type ContactValues,
+} from "@/lib/validations";
+import { infoCards, contactFaqs } from "./data";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+
+  const form = useForm<ContactValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: { name: "", email: "", subject: "", message: "" },
+  });
+
+  const { mutate, isPending, errorMessage } = useAppMutation<ContactValues>({
+    mutationFn: async () => {
+      // Placeholder until M2 API endpoint is built
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    },
+    onSuccess: () => setSubmitted(true),
+  });
 
   return (
     <>
@@ -115,68 +95,115 @@ export default function ContactPage() {
                   </p>
                 </div>
               ) : (
-                <form
-                  className="space-y-5"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSubmitted(true);
-                  }}
-                >
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        id="name"
-                        placeholder="Your name"
-                        required
-                        className="h-11"
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit((data) => mutate(data))}
+                    className="space-y-5"
+                  >
+                    {errorMessage && (
+                      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
+                        {errorMessage}
+                      </div>
+                    )}
+
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="Your name"
+                                className="h-11"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="email"
+                                placeholder="you@email.com"
+                                className="h-11"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="you@email.com"
-                        required
-                        className="h-11"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Select>
-                      <SelectTrigger className="h-11">
-                        <SelectValue placeholder="Select a subject" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="general">
-                          General Inquiry
-                        </SelectItem>
-                        <SelectItem value="bug">Report a Bug</SelectItem>
-                        <SelectItem value="listing">
-                          Report a Listing
-                        </SelectItem>
-                        <SelectItem value="partnership">
-                          Partnership
-                        </SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      placeholder="Tell us what's on your mind..."
-                      required
-                      rows={5}
+
+                    <FormField
+                      control={form.control}
+                      name="subject"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Subject</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="h-11">
+                                <SelectValue placeholder="Select a subject" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {CONTACT_SUBJECTS.map((subject) => (
+                                <SelectItem
+                                  key={subject.value}
+                                  value={subject.value}
+                                >
+                                  {subject.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <Button type="submit" variant="ism" size="lg" className="w-full">
-                    Send Message
-                  </Button>
-                </form>
+
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Message</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Tell us what's on your mind..."
+                              rows={5}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button
+                      type="submit"
+                      variant="ism"
+                      size="lg"
+                      className="w-full"
+                      disabled={isPending}
+                    >
+                      {isPending ? "Sending..." : "Send Message"}
+                    </Button>
+                  </form>
+                </Form>
               )}
             </GlassCard>
           </motion.div>

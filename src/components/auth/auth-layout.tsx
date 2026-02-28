@@ -3,23 +3,13 @@
 import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { motion } from "motion/react";
-import { HiBriefcase, HiHome, HiTag } from "react-icons/hi2";
 import { Logo } from "@/components/ui/logo";
 import { Counter } from "@/components/animations/counter";
 import { ease, labelReveal, bodyFade } from "@/components/animations/variants";
+import { ROUTES } from "@/lib/routes";
+import { type VariantContent, nodes, connections } from "./data";
 
 /* ─── Variant content ─── */
-interface VariantContent {
-  headline: React.ReactNode;
-  description: string;
-  stats: {
-    value: string;
-    target: number;
-    label: string;
-    format: (n: number) => string;
-  }[];
-}
-
 const signInContent: VariantContent = {
   headline: (
     <>
@@ -83,27 +73,6 @@ const signUpContent: VariantContent = {
     },
   ],
 };
-
-/* ─── Animated network constellation ─── */
-const nodes = [
-  { id: "jobs", x: 22, y: 30, icon: HiBriefcase, label: "Jobs", delay: 0 },
-  { id: "housing", x: 72, y: 22, icon: HiHome, label: "Housing", delay: 0.3 },
-  { id: "deals", x: 50, y: 68, icon: HiTag, label: "Deals", delay: 0.6 },
-  { id: "n1", x: 10, y: 58, delay: 0.2 },
-  { id: "n2", x: 85, y: 52, delay: 0.5 },
-  { id: "n3", x: 38, y: 15, delay: 0.1 },
-  { id: "n4", x: 60, y: 45, delay: 0.4 },
-  { id: "n5", x: 28, y: 78, delay: 0.7 },
-  { id: "n6", x: 78, y: 75, delay: 0.35 },
-] as const;
-
-const connections = [
-  ["jobs", "n3"], ["jobs", "n1"], ["jobs", "n4"],
-  ["housing", "n3"], ["housing", "n2"], ["housing", "n4"],
-  ["deals", "n4"], ["deals", "n5"], ["deals", "n6"],
-  ["n1", "n5"], ["n2", "n6"], ["n3", "n4"],
-  ["jobs", "housing"], ["housing", "deals"], ["deals", "jobs"],
-];
 
 function NetworkDiagram() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -366,7 +335,7 @@ export function AuthLayout({
 
         {/* Top: Logo + Headline */}
         <div className="relative z-10 shrink-0">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href={ROUTES.home} className="flex items-center gap-2.5">
             <Logo size={36} />
             <span className="text-xl font-bold tracking-tight text-white">ISM</span>
           </Link>

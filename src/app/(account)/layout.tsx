@@ -3,15 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { HiBookmark, HiBell, HiCog6Tooth } from "react-icons/hi2";
 import { labelReveal } from "@/components/animations/variants";
 import { RevealHeading } from "@/components/home/value-proposition/reveal-heading";
-
-const navItems = [
-  { label: "Saved Items", href: "/saved", icon: HiBookmark },
-  { label: "Alerts", href: "/alerts", icon: HiBell },
-  { label: "Settings", href: "/settings", icon: HiCog6Tooth },
-];
+import { navItems } from "./data";
 
 export default function AccountLayout({
   children,

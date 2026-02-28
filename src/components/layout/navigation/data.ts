@@ -1,56 +1,57 @@
 import type { NavItem, NavChild } from "./types";
+import { ROUTES } from "@/lib/routes";
 
 export const navItems: NavItem[] = [
   {
     label: "Hub",
-    href: "/hub",
+    href: ROUTES.hub,
     headline: "Find what you need\nas a student in Australia",
     children: [
       {
         label: "Part-Time Jobs",
-        href: "/hub?tab=jobs",
+        href: ROUTES.hubJobs,
         description: "Casual & part-time work opportunities",
       },
       {
         label: "Accommodation",
-        href: "/hub?tab=housing",
+        href: ROUTES.hubHousing,
         description: "Share housing & flatmate listings",
       },
       {
         label: "Student Discounts",
-        href: "/hub?tab=discounts",
+        href: ROUTES.hubDiscounts,
         description: "Verified deals & savings for students",
       },
     ],
   },
   {
     label: "Resources",
-    href: "/about",
+    href: ROUTES.about,
     headline: "Everything you need to\nstay connected and informed",
     children: [
       {
         label: "About ISM",
-        href: "/about",
+        href: ROUTES.about,
         description: "Our mission & story",
       },
       {
         label: "Blog",
-        href: "/blog",
+        href: ROUTES.blog,
         description: "Guides, tips & student news",
       },
       {
         label: "Community",
-        href: "/community",
+        href: ROUTES.community,
         description: "Connect with other students",
       },
     ],
   },
-  { label: "Forum", href: "/forum" },
-  { label: "Contact", href: "/contact" },
+  { label: "Forum", href: ROUTES.forum },
+  { label: "Contact", href: ROUTES.contact },
 ];
 
 export const accountLinks: NavChild[] = [
-  { label: "Saved Items", href: "/saved", description: "Your bookmarked listings" },
-  { label: "Alerts", href: "/alerts", description: "Notification preferences" },
-  { label: "Settings", href: "/settings", description: "Account & profile" },
+  { label: "Saved Items", href: ROUTES.saved, description: "Your bookmarked listings" },
+  { label: "Alerts", href: ROUTES.alerts, description: "Notification preferences" },
+  { label: "Settings", href: ROUTES.settings, description: "Account & profile" },
 ];

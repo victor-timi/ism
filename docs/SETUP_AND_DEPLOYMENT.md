@@ -187,11 +187,8 @@ Runtime details:
 | `NEXT_PUBLIC_SANITY_DATASET` | Yes | Yes | Sanity dataset name |
 | `SANITY_API_TOKEN` | Yes | No | Sanity API token (Editor role) |
 | `SANITY_REVALIDATE_SECRET` | Yes | No | Secret for webhook revalidation |
-| `SMTP_HOST` | M2 | No | Email SMTP host |
-| `SMTP_PORT` | M2 | No | Email SMTP port |
-| `SMTP_USER` | M2 | No | Email SMTP username |
-| `SMTP_PASS` | M2 | No | Email SMTP password |
-| `EMAIL_FROM` | M2 | No | Sender email address |
+| `RESEND_API_KEY` | M2 | No | Resend API key for transactional email |
+| `EMAIL_FROM` | M2 | No | Sender address (e.g. `ISM <noreply@ism.org.au>`) |
 | `DISCOURSE_URL` | M3 | No | Discourse forum URL |
 | `DISCOURSE_SSO_SECRET` | M3 | No | Discourse SSO secret |
 | `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | M2 | Yes | Plausible analytics domain |

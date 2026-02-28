@@ -3,14 +3,11 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
-import { HiOutlineBars3, HiBriefcase, HiHome, HiTag, HiUser } from "react-icons/hi2";
+import { HiOutlineBars3, HiTag, HiUser } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-
-const navLinks = [
-  { href: "/hub", label: "Hub", icon: HiBriefcase },
-  { href: "/about", label: "About", icon: HiHome },
-];
+import { ROUTES } from "@/lib/routes";
+import { navLinks } from "./data";
 
 export function Header() {
   const { data: session } = useSession();
@@ -20,7 +17,7 @@ export function Header() {
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+        <Link href={ROUTES.home} className="flex items-center gap-2 font-bold text-xl">
           <span className="bg-primary text-primary-foreground rounded-lg px-2 py-1 text-sm">
             ISM
           </span>
@@ -42,7 +39,7 @@ export function Header() {
           {session ? (
             <div className="flex items-center gap-4">
               <Link
-                href="/saved"
+                href={ROUTES.saved}
                 className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
               >
                 Saved
@@ -54,10 +51,10 @@ export function Header() {
           ) : (
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" asChild>
-                <Link href="/sign-in">Sign In</Link>
+                <Link href={ROUTES.signIn}>Sign In</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href="/sign-up">Sign Up</Link>
+                <Link href={ROUTES.signUp}>Sign Up</Link>
               </Button>
             </div>
           )}
@@ -88,7 +85,7 @@ export function Header() {
               {session ? (
                 <>
                   <Link
-                    href="/saved"
+                    href={ROUTES.saved}
                     onClick={() => setOpen(false)}
                     className="flex items-center gap-3 text-lg font-medium"
                   >
@@ -96,7 +93,7 @@ export function Header() {
                     Saved Items
                   </Link>
                   <Link
-                    href="/settings"
+                    href={ROUTES.settings}
                     onClick={() => setOpen(false)}
                     className="flex items-center gap-3 text-lg font-medium"
                   >
@@ -110,12 +107,12 @@ export function Header() {
               ) : (
                 <div className="mt-4 flex flex-col gap-2">
                   <Button asChild>
-                    <Link href="/sign-up" onClick={() => setOpen(false)}>
+                    <Link href={ROUTES.signUp} onClick={() => setOpen(false)}>
                       Sign Up
                     </Link>
                   </Button>
                   <Button variant="outline" asChild>
-                    <Link href="/sign-in" onClick={() => setOpen(false)}>
+                    <Link href={ROUTES.signIn} onClick={() => setOpen(false)}>
                       Sign In
                     </Link>
                   </Button>

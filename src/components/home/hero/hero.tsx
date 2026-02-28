@@ -16,6 +16,7 @@ import { AnimatedHeading } from "./animated-heading";
 import { HeroIllustration } from "./hero-illustration";
 import { GrowthChart } from "./growth-chart";
 import { useTypewriter } from "./use-typewriter";
+import { ROUTES } from "@/lib/routes";
 
 const TAGLINE = "For Students. By Students.";
 const DESCRIPTION =
@@ -188,10 +189,10 @@ export function Hero() {
                 transition={{ duration: 0.5, ease, delay: 0.3 }}
               >
                 <Button variant="ism" size="lg" asChild>
-                  <Link href="/hub">Explore the Hub</Link>
+                  <Link href={ROUTES.hub}>Explore the Hub</Link>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
-                  <Link href="/about">Learn More</Link>
+                  <Link href={ROUTES.about}>Learn More</Link>
                 </Button>
               </motion.div>
             </motion.div>

@@ -9,6 +9,7 @@ import {
   labelReveal,
   bodyFade,
 } from "@/components/home/value-proposition/variants";
+import { ROUTES } from "@/lib/routes";
 
 export function CTA() {
   return (
@@ -58,10 +59,10 @@ export function CTA() {
           transition={{ duration: 0.5, ease, delay: 0.6 }}
         >
           <Button variant="ism" size="lg" asChild>
-            <Link href="/signup">Sign Up Free</Link>
+            <Link href={ROUTES.signUp}>Sign Up Free</Link>
           </Button>
           <Button variant="outline" size="lg" asChild>
-            <Link href="/hub">Explore the Hub</Link>
+            <Link href={ROUTES.hub}>Explore the Hub</Link>
           </Button>
         </motion.div>
       </div>

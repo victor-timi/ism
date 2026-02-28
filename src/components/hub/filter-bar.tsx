@@ -4,8 +4,7 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import { motion } from "motion/react";
 import { Input } from "@/components/ui/input";
 import { ease } from "@/components/animations/variants";
-
-const filters = ["All Cities", "Sydney", "Melbourne", "Brisbane", "Perth"];
+import { cityFilters } from "./data";
 
 export function FilterBar() {
   return (
@@ -26,7 +25,7 @@ export function FilterBar() {
 
       {/* Filter pills */}
       <div className="flex flex-wrap gap-2">
-        {filters.map((filter, i) => (
+        {cityFilters.map((filter, i) => (
           <button
             key={filter}
             className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-all ${

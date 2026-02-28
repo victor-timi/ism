@@ -1,35 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ease } from "@/components/animations/variants";
-
-const browseLinks = [
-  { label: "Jobs", href: "/hub?tab=jobs" },
-  { label: "Housing", href: "/hub?tab=housing" },
-  { label: "Discounts", href: "/hub?tab=discounts" },
-];
-
-const resourceLinks = [
-  { label: "About", href: "/about" },
-  { label: "Blog", href: "/blog" },
-  { label: "Community", href: "/community" },
-  { label: "Forum", href: "/forum" },
-];
-
-const companyLinks = [
-  { label: "Contact", href: "/contact" },
-  { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "/terms" },
-];
-
-const socialLinks = [
-  { label: "Instagram", href: "#" },
-  { label: "Twitter / X", href: "#" },
-  { label: "LinkedIn", href: "#" },
-];
+import { ROUTES } from "@/lib/routes";
+import { useAppMutation } from "@/lib/hooks/use-app-mutation";
+import { newsletterSchema, type NewsletterValues } from "@/lib/validations";
+import {
+  browseLinks,
+  resourceLinks,
+  companyLinks,
+  socialLinks,
+} from "./data";
 
 function FooterColumn({
   title,
@@ -60,6 +46,24 @@ function FooterColumn({
 }
 
 export function Footer() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<NewsletterValues>({
+    resolver: zodResolver(newsletterSchema),
+    defaultValues: { email: "" },
+  });
+
+  const { mutate, isPending } = useAppMutation<NewsletterValues>({
+    mutationFn: async () => {
+      // Placeholder until M2 API endpoint is built
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    },
+    onSuccess: () => reset(),
+  });
+
   return (
     <footer className="relative overflow-hidden bg-[var(--ism-bg)] text-[var(--ism-fg)]">
       {/* Subtle gradient divider instead of hard border */}
@@ -75,7 +79,7 @@ export function Footer() {
         {/* Top: Logo + Newsletter */}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-sm">
-            <Link href="/" className="inline-block">
+            <Link href={ROUTES.home} className="inline-block">
               <span className="text-2xl font-bold tracking-tight text-[var(--ism-fg)]">
                 ISM
               </span>
@@ -92,20 +96,30 @@ export function Footer() {
             </p>
             <form
               className="mt-3 flex gap-2"
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSubmit((data) => mutate(data))}
             >
-              <Input
-                type="email"
-                placeholder="your@email.com"
-                className="h-10"
-              />
+              <div className="flex-1">
+                <Input
+                  {...register("email")}
+                  type="email"
+                  placeholder="your@email.com"
+                  className="h-10"
+                  aria-invalid={!!errors.email}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-left text-xs text-red-500">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
               <Button
                 type="submit"
                 variant="ism"
                 size="default"
                 className="shrink-0"
+                disabled={isPending}
               >
-                Subscribe
+                {isPending ? "..." : "Subscribe"}
               </Button>
             </form>
           </div>

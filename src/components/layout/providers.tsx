@@ -1,15 +1,28 @@
 "use client";
 
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { SmoothScrollProvider } from "@/components/layout/smooth-scroll";
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: { staleTime: 60 * 1000 },
+        },
+      }),
+  );
+
   return (
-    <SessionProvider>
-      <ThemeProvider>
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
-      </ThemeProvider>
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider>
+        <ThemeProvider>
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        </ThemeProvider>
+      </SessionProvider>
+    </QueryClientProvider>
   );
 }

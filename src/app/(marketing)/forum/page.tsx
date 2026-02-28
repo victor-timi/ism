@@ -1,11 +1,8 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "motion/react";
-import {
-  HiChatBubbleLeftRight,
-  HiBolt,
-  HiShieldCheck,
-} from "react-icons/hi2";
 import { PageHero } from "@/components/layout/page-hero";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
@@ -18,32 +15,29 @@ import {
   bodyFade,
 } from "@/components/animations/variants";
 import { RevealHeading } from "@/components/home/value-proposition/reveal-heading";
-
-const features = [
-  {
-    icon: HiChatBubbleLeftRight,
-    title: "Organised Channels",
-    description:
-      "Dedicated channels for jobs, housing, visa questions, city-specific chats, and general discussions.",
-    gradient: "from-emerald-500/20 via-emerald-400/10 to-transparent",
-  },
-  {
-    icon: HiBolt,
-    title: "Real-time Threads",
-    description:
-      "Instant replies, threaded conversations, and notifications so you never miss an important discussion.",
-    gradient: "from-sky-500/20 via-cyan-400/10 to-transparent",
-  },
-  {
-    icon: HiShieldCheck,
-    title: "Verified Profiles",
-    description:
-      "Verified student profiles ensure you're getting advice from real international students, not bots.",
-    gradient: "from-violet-500/20 via-purple-400/10 to-transparent",
-  },
-];
+import { useAppMutation } from "@/lib/hooks/use-app-mutation";
+import { newsletterSchema, type NewsletterValues } from "@/lib/validations";
+import { features } from "./data";
 
 export default function ForumPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<NewsletterValues>({
+    resolver: zodResolver(newsletterSchema),
+    defaultValues: { email: "" },
+  });
+
+  const { mutate, isPending } = useAppMutation<NewsletterValues>({
+    mutationFn: async () => {
+      // Placeholder until M2 API endpoint is built
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    },
+    onSuccess: () => reset(),
+  });
+
   return (
     <>
       <PageHero
@@ -130,19 +124,33 @@ export default function ForumPage() {
           </motion.p>
           <motion.form
             className="mx-auto mt-8 flex max-w-md gap-2"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit((data) => mutate(data))}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease, delay: 0.6 }}
           >
-            <Input
-              type="email"
-              placeholder="your@email.com"
-              className="h-11"
-            />
-            <Button type="submit" variant="ism" size="lg">
-              Notify Me
+            <div className="flex-1">
+              <Input
+                {...register("email")}
+                type="email"
+                placeholder="your@email.com"
+                className="h-11"
+                aria-invalid={!!errors.email}
+              />
+              {errors.email && (
+                <p className="mt-1 text-left text-sm text-red-500">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+            <Button
+              type="submit"
+              variant="ism"
+              size="lg"
+              disabled={isPending}
+            >
+              {isPending ? "..." : "Notify Me"}
             </Button>
           </motion.form>
         </div>

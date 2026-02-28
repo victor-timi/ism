@@ -12,6 +12,7 @@ import {
   bodyFade,
 } from "@/components/animations/variants";
 import { RevealHeading } from "@/components/home/value-proposition/reveal-heading";
+import { ROUTES } from "@/lib/routes";
 
 export default function BlogPage() {
   const featured = mockPosts.find((p) => p.featured);
@@ -73,7 +74,7 @@ export default function BlogPage() {
             transition={{ duration: 0.5, ease, delay: 0.6 }}
           >
             <Button variant="ism" size="lg" asChild>
-              <Link href="/contact">Get in Touch</Link>
+              <Link href={ROUTES.contact}>Get in Touch</Link>
             </Button>
           </motion.div>
         </div>

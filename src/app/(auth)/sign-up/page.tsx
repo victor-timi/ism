@@ -1,70 +1,59 @@
 "use client";
 
-import { useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAuthSubmit } from "@/lib/hooks/use-auth-submit";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { useAppMutation } from "@/lib/hooks/use-app-mutation";
+import { apiClient } from "@/lib/api/client";
+import { signUpSchema, type SignUpValues } from "@/lib/validations";
+import { ROUTES } from "@/lib/routes";
 import { AuthLayout } from "@/components/auth/auth-layout";
 
 export default function SignUpPage() {
   const router = useRouter();
 
-  const onSubmit = useCallback(
-    async (formData: FormData) => {
-      const name = formData.get("name") as string;
-      const email = formData.get("email") as string;
-      const password = formData.get("password") as string;
-      const confirmPassword = formData.get("confirmPassword") as string;
+  const form = useForm<SignUpValues>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
+  });
 
-      if (password !== confirmPassword) {
-        return { error: "Passwords do not match" };
-      }
+  const { mutate, isPending, errorMessage } = useAppMutation<SignUpValues>({
+    mutationFn: async (data) => {
+      await apiClient.post("/api/auth/register", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
 
-      if (password.length < 8) {
-        return { error: "Password must be at least 8 characters" };
-      }
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
 
-      try {
-        const res = await fetch("/api/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          return { error: data.error || "Something went wrong" };
-        }
-
-        const result = await signIn("credentials", {
-          email,
-          password,
-          redirect: false,
-        });
-
-        if (result?.error) {
-          return {
-            error:
-              "Account created but failed to sign in. Please sign in manually.",
-          };
-        }
-
-        router.push("/");
-        router.refresh();
-        return {};
-      } catch {
-        return { error: "Something went wrong. Please try again." };
+      if (result?.error) {
+        throw new Error(
+          "Account created but failed to sign in. Please sign in manually.",
+        );
       }
     },
-    [router],
-  );
-
-  const { error, loading, handleSubmit } = useAuthSubmit({ onSubmit });
+    onSuccess: () => {
+      router.push("/");
+      router.refresh();
+    },
+  });
 
   return (
     <AuthLayout variant="sign-up">
@@ -77,85 +66,116 @@ export default function SignUpPage() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-        {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
-            {error}
-          </div>
-        )}
-        <div className="space-y-2">
-          <Label htmlFor="name" className="text-[var(--ism-fg)]">
-            Full Name
-          </Label>
-          <Input
-            id="name"
-            name="name"
-            type="text"
-            required
-            autoComplete="name"
-            placeholder="Your name"
-            className="h-11"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-[var(--ism-fg)]">
-            Email
-          </Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            placeholder="you@university.edu.au"
-            className="h-11"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password" className="text-[var(--ism-fg)]">
-            Password
-          </Label>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            placeholder="Min. 8 characters"
-            className="h-11"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword" className="text-[var(--ism-fg)]">
-            Confirm Password
-          </Label>
-          <Input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            placeholder="Repeat your password"
-            className="h-11"
-          />
-        </div>
-        <Button
-          type="submit"
-          variant="ism"
-          size="lg"
-          className="w-full"
-          disabled={loading}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((data) => mutate(data))}
+          className="mt-8 space-y-5"
         >
-          {loading ? "Creating account..." : "Create Account"}
-        </Button>
-      </form>
+          {errorMessage && (
+            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
+              {errorMessage}
+            </div>
+          )}
+
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[var(--ism-fg)]">
+                  Full Name
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    autoComplete="name"
+                    placeholder="Your name"
+                    className="h-11"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[var(--ism-fg)]">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@university.edu.au"
+                    className="h-11"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[var(--ism-fg)]">Password</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    autoComplete="new-password"
+                    placeholder="Min. 8 characters"
+                    className="h-11"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[var(--ism-fg)]">
+                  Confirm Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    autoComplete="new-password"
+                    placeholder="Repeat your password"
+                    className="h-11"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type="submit"
+            variant="ism"
+            size="lg"
+            className="w-full"
+            disabled={isPending}
+          >
+            {isPending ? "Creating account..." : "Create Account"}
+          </Button>
+        </form>
+      </Form>
 
       <p className="mt-6 text-center text-sm text-[var(--ism-fg-muted)]">
         Already have an account?{" "}
         <Link
-          href="/sign-in"
+          href={ROUTES.signIn}
           className="font-medium text-[var(--ism-accent)] hover:underline"
         >
           Sign in

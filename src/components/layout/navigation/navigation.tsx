@@ -10,6 +10,7 @@ import { ChevronDown, ChevronRight } from "@/components/icons";
 import { navItems, accountLinks } from "./data";
 import { mobileItem } from "./variants";
 import { LogoTilt } from "./logo-tilt";
+import { ROUTES } from "@/lib/routes";
 
 export function Navigation() {
   const { data: session } = useSession();
@@ -109,13 +110,13 @@ export function Navigation() {
             ) : (
               <div className="flex items-center gap-4" onMouseEnter={closeDropdown}>
                 <Link
-                  href="/sign-in"
+                  href={ROUTES.signIn}
                   className="text-xs font-medium tracking-[0.15em] text-[var(--ism-fg)] uppercase transition-opacity hover:opacity-70"
                 >
                   Sign In
                 </Link>
                 <Button variant="ism" size="sm" asChild>
-                  <Link href="/sign-up">Join Now</Link>
+                  <Link href={ROUTES.signUp}>Join Now</Link>
                 </Button>
               </div>
             )}
@@ -350,7 +351,7 @@ export function Navigation() {
                     exit="exit"
                   >
                     <Link
-                      href="/sign-in"
+                      href={ROUTES.signIn}
                       onClick={() => setMenuOpen(false)}
                       className="text-2xl font-bold text-[var(--ism-fg-muted)] transition-opacity hover:opacity-70"
                     >
@@ -366,7 +367,7 @@ export function Navigation() {
                     className="mt-2"
                   >
                     <Button variant="ism" size="lg" asChild className="w-full">
-                      <Link href="/sign-up" onClick={() => setMenuOpen(false)}>
+                      <Link href={ROUTES.signUp} onClick={() => setMenuOpen(false)}>
                         Join Now
                       </Link>
                     </Button>

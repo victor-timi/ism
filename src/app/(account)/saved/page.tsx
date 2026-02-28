@@ -1,15 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { HiBookmark, HiBriefcase, HiHome, HiTag } from "react-icons/hi2";
+import { HiBookmark } from "react-icons/hi2";
 import { PremiumEmptyState } from "@/components/ui/premium-empty-state";
-
-const filters = [
-  { label: "All", value: "all" },
-  { label: "Jobs", value: "jobs", icon: HiBriefcase },
-  { label: "Housing", value: "housing", icon: HiHome },
-  { label: "Discounts", value: "discounts", icon: HiTag },
-];
+import { filters } from "./data";
 
 export default function SavedPage() {
   const [active, setActive] = useState("all");
