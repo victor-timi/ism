@@ -1,5 +1,6 @@
 import { Hero } from "@/components/home/hero";
-import { ValueProposition } from "@/components/home/value-proposition";
+import { StudentCommunity, ValueProposition } from "@/components/home/value-proposition";
+import { EventsShowcase } from "@/components/home/events-showcase";
 import { UpcomingEvents } from "@/components/home/upcoming-events";
 import { GettingStarted } from "@/components/home/getting-started";
 import { FAQ } from "@/components/home/faq";
@@ -9,6 +10,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <StudentCommunity />
+      <EventsShowcase />
       <ValueProposition />
       <UpcomingEvents />
       <GettingStarted />

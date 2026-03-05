@@ -1,12 +1,8 @@
 "use client";
 
-import { useRef, useCallback, type MouseEvent as ReactMouseEvent } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "motion/react";
+import { useCallback, type MouseEvent as ReactMouseEvent } from "react";
+import { motion, useMotionValue, useTransform } from "motion/react";
+import { useTilt3D } from "@/lib/hooks/use-tilt-3d";
 
 /* ═══════════════════════════════════════════
    GlassCard — ISM brand glassmorphism card
@@ -39,58 +35,34 @@ export function GlassCard({
   style,
   as: Tag = "div",
 }: GlassCardProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-  const glareX = useMotionValue(50);
-  const glareY = useMotionValue(50);
+  const tilt = useTilt3D(tiltStrength);
   const glareOpacity = useMotionValue(0);
 
-  const springConfig = { stiffness: 300, damping: 25 };
-  const springRotateX = useSpring(rotateX, springConfig);
-  const springRotateY = useSpring(rotateY, springConfig);
+  const glareBackground = useTransform(
+    [tilt.mouseX, tilt.mouseY],
+    ([x, y]) =>
+      `radial-gradient(circle at ${Number(x) * 100}% ${Number(y) * 100}%, rgba(255,255,255,0.35), transparent 60%)`,
+  );
 
   const handleMove = useCallback(
     (e: ReactMouseEvent<HTMLDivElement>) => {
-      if (tiltStrength === 0) return;
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-
-      rotateX.set((y - 0.5) * -tiltStrength);
-      rotateY.set((x - 0.5) * tiltStrength);
-      glareX.set(x * 100);
-      glareY.set(y * 100);
+      tilt.onMouseMove(e);
       glareOpacity.set(0.15);
     },
-    [tiltStrength, rotateX, rotateY, glareX, glareY, glareOpacity],
+    [tilt, glareOpacity],
   );
 
   const handleLeave = useCallback(() => {
-    rotateX.set(0);
-    rotateY.set(0);
+    tilt.onMouseLeave();
     glareOpacity.set(0);
-  }, [rotateX, rotateY, glareOpacity]);
-
-  const glareBackground = useTransform(
-    [glareX, glareY],
-    ([x, y]) =>
-      `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.35), transparent 60%)`,
-  );
+  }, [tilt, glareOpacity]);
 
   return (
     <motion.div
-      ref={ref}
+      ref={tilt.ref}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      style={{
-        rotateX: tiltStrength > 0 ? springRotateX : 0,
-        rotateY: tiltStrength > 0 ? springRotateY : 0,
-        transformPerspective: 800,
-        transformStyle: "preserve-3d",
-      }}
+      style={tiltStrength > 0 ? tilt.style : undefined}
       className="group relative h-full"
     >
       {/* Glass glare layer */}
