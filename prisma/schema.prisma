@@ -19,10 +19,11 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts   Account[]
-  sessions   Session[]
-  savedItems SavedItem[]
-  alerts     Alert[]
+  accounts    Account[]
+  sessions    Session[]
+  savedItems  SavedItem[]
+  savedEvents SavedEvent[]
+  alerts      Alert[]
 }
 
 model Account {
@@ -133,6 +134,18 @@ model Alert {
 
   @@index([userId])
   @@index([type, isActive])
+}
+
+model SavedEvent {
+  id             String   @id @default(cuid())
+  userId         String
+  sanityEventId  String
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sanityEventId])
+  @@index([userId])
 }
 
 // ─── Ingestion Tracking ──────────────────────────────────────────────────────

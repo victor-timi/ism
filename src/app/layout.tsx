@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | ISM",
   },
   description:
-    "Join the movement. Find jobs, housing, and discounts for international students in Australia.",
+    "Join the movement. Find jobs, housing, discounts, and events for international students in Australia.",
 };
 
 export default function RootLayout({

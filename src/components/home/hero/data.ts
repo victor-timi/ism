@@ -75,4 +75,13 @@ export const heroIconData: HeroIconDatum[] = [
     statLabel: "avg. saved / mo",
     highlights: ["Food & groceries", "Tech & software", "Transport"],
   },
+  {
+    heading: "Find Events Near You",
+    tagline: "Events",
+    description:
+      "Meetups, career fairs, cultural nights, and workshops — curated for international students across Australian cities.",
+    stat: "50+",
+    statLabel: "events this month",
+    highlights: ["Meetups & socials", "Career fairs", "Cultural nights"],
+  },
 ];

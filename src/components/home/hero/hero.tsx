@@ -20,7 +20,7 @@ import { ROUTES } from "@/lib/routes";
 
 const TAGLINE = "For Students. By Students.";
 const DESCRIPTION =
-  "We aggregate part-time jobs, share housing, and student discounts into one place so international students in Australia can stop searching and start living.";
+  "We aggregate part-time jobs, share housing, student discounts, and events into one place so international students in Australia can stop searching and start living.";
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);

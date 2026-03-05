@@ -22,6 +22,11 @@ export const navItems: NavItem[] = [
         href: ROUTES.hubDiscounts,
         description: "Verified deals & savings for students",
       },
+      {
+        label: "Events",
+        href: ROUTES.hubEvents,
+        description: "Student events & meetups near you",
+      },
     ],
   },
   {

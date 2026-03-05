@@ -10,6 +10,7 @@ export function HeroIllustration() {
   const jobsRef = useRef<HTMLDivElement>(null);
   const housingRef = useRef<HTMLDivElement>(null);
   const dealsRef = useRef<HTMLDivElement>(null);
+  const eventsRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLDivElement>(null);
 
   // Track which dropdown is open to raise its z-index above siblings.
@@ -23,6 +24,9 @@ export function HeroIllustration() {
   }, []);
   const onDealsOpen = useCallback((open: boolean) => {
     setActiveLayer((prev) => (open ? "deals" : prev === "deals" ? null : prev));
+  }, []);
+  const onEventsOpen = useCallback((open: boolean) => {
+    setActiveLayer((prev) => (open ? "events" : prev === "events" ? null : prev));
   }, []);
 
   // Track mouse at window level for illustration parallax
@@ -43,6 +47,7 @@ export function HeroIllustration() {
       { ref: jobsRef, speed: 1.4, tx: 0, ty: 0, rotate: 0 },
       { ref: housingRef, speed: 1.0, tx: 0, ty: 0, rotate: 0 },
       { ref: dealsRef, speed: 1.8, tx: 0, ty: 0, rotate: 0 },
+      { ref: eventsRef, speed: 1.2, tx: 0, ty: 0, rotate: 0 },
       { ref: dotsRef, speed: 0.4, tx: 0, ty: 0, rotate: 0 },
     ];
 
@@ -109,6 +114,12 @@ export function HeroIllustration() {
               stroke={ICON_COLOR} strokeWidth="0.8" strokeDasharray="3 9"
               opacity="0.2"
               transform="rotate(-55 240 240)"
+            />
+            <ellipse
+              cx="240" cy="240" rx="175" ry="75"
+              stroke={ICON_COLOR} strokeWidth="0.7" strokeDasharray="4 10"
+              opacity="0.18"
+              transform="rotate(15 240 240)"
             />
             <circle cx="240" cy="240" r="90" fill={ICON_COLOR} opacity="0.025" />
             <circle cx="240" cy="240" r="45" fill={ICON_COLOR} opacity="0.04" />
@@ -204,6 +215,41 @@ export function HeroIllustration() {
                   <circle cx="34" cy="36" r="2.5" stroke={ICON_COLOR} strokeWidth="1.5" fill="none" />
                   <circle cx="46" cy="46" r="2.5" stroke={ICON_COLOR} strokeWidth="1.5" fill="none" />
                   <line x1="47" y1="34" x2="33" y2="48" stroke={ICON_COLOR} strokeWidth="1.5" strokeLinecap="round" />
+                </IconBubble>
+              </motion.div>
+            </HeroIconDropdown>
+          </motion.div>
+        </div>
+
+        {/* Events — top-left */}
+        <div
+          ref={eventsRef}
+          className="pointer-events-auto absolute"
+          style={{
+            left: "22%",
+            top: "25%",
+            zIndex: activeLayer === "events" ? 30 : 2,
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 24, scale: 0.8 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false }}
+            transition={{ delay: 0.65, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <HeroIconDropdown {...heroIconData[3]} align="right" onOpenChange={onEventsOpen}>
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+              >
+                <IconBubble>
+                  {/* Calendar icon */}
+                  <rect x="30" y="30" width="20" height="20" rx="2.5" stroke={ICON_COLOR} strokeWidth="1.5" fill="none" />
+                  <line x1="35" y1="28" x2="35" y2="33" stroke={ICON_COLOR} strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="45" y1="28" x2="45" y2="33" stroke={ICON_COLOR} strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="30" y1="37" x2="50" y2="37" stroke={ICON_COLOR} strokeWidth="1" opacity="0.4" />
+                  <circle cx="37" cy="43" r="1.5" fill={ICON_COLOR} opacity="0.6" />
+                  <circle cx="43" cy="43" r="1.5" fill={ICON_COLOR} opacity="0.6" />
                 </IconBubble>
               </motion.div>
             </HeroIconDropdown>

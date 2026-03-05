@@ -231,13 +231,13 @@ export function ValueProposition() {
             viewport={{ once: false, margin: "-60px" }}
           >
             Moving to Australia for uni is already a big leap. We bring together
-            the stuff you actually need — jobs, housing, and deals — so you can
-            focus on studying, not searching.
+            the stuff you actually need — jobs, housing, deals, and events — so
+            you can focus on studying, not searching.
           </motion.p>
         </div>
 
         {/* Pillar cards — glassmorphism + 3D tilt */}
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3 lg:mt-20 lg:gap-8">
+        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-20 lg:grid-cols-4 lg:gap-8">
           {pillars.map((pillar, i) => (
             <motion.div
               key={pillar.heading}

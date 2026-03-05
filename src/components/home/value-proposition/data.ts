@@ -2,6 +2,7 @@ import {
   HiOutlineBriefcase,
   HiOutlineHomeModern,
   HiOutlineTicket,
+  HiOutlineCalendarDays,
 } from "react-icons/hi2";
 import type { ForumMessage, ForumChannel } from "@/components/forum";
 
@@ -44,6 +45,19 @@ export const pillars = [
     stat: "$320",
     statLabel: "avg. saved / month",
     gradient: "from-violet-500/20 via-purple-500/10 to-transparent",
+  },
+  {
+    icon: HiOutlineCalendarDays,
+    heading: "Find Events Near You",
+    tagline: "Meetups, career fairs & cultural nights",
+    description:
+      "Feeling isolated? We curate student events — socials, networking, workshops, and cultural nights — so you can meet people, build connections, and actually enjoy your time here.",
+    highlights: ["Meetups & socials", "Career fairs", "Cultural nights"],
+    href: "/hub/events",
+    cta: "Browse events",
+    stat: "50+",
+    statLabel: "events this month",
+    gradient: "from-amber-500/20 via-orange-400/10 to-transparent",
   },
 ] as const;
 

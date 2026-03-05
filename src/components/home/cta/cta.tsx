@@ -48,7 +48,7 @@ export function CTA() {
           viewport={{ once: false, margin: "-60px" }}
         >
           Join 833,000+ international students. One platform for jobs, housing,
-          and deals — completely free.
+          deals, and events — completely free.
         </motion.p>
 
         <motion.div

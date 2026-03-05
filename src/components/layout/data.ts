@@ -17,6 +17,7 @@ export const browseLinks = [
   { label: "Jobs", href: ROUTES.hubJobs },
   { label: "Housing", href: ROUTES.hubHousing },
   { label: "Discounts", href: ROUTES.hubDiscounts },
+  { label: "Events", href: ROUTES.hubEvents },
 ];
 
 export const resourceLinks = [

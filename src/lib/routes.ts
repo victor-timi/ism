@@ -14,6 +14,7 @@ export const ROUTES = {
   hubJobs: "/hub?tab=jobs",
   hubHousing: "/hub?tab=housing",
   hubDiscounts: "/hub?tab=discounts",
+  hubEvents: "/hub/events",
 
   // Account (protected)
   saved: "/saved",

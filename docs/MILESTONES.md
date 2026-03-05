@@ -14,6 +14,8 @@
 
 **Status: COMPLETE**
 
+> Post-M1 feedback: Client requested Events as a 5th pillar (not in original proposal). Implemented and scoped into M2.
+
 ### Deliverables
 
 | # | Deliverable | Status | Notes |
@@ -61,18 +63,19 @@
 
 ## Milestone 2 — Hub Core Functionality ($600)
 
-**Status: NOT STARTED**
+**Status: IN PROGRESS**
 
 ### Deliverables
 
-| # | Deliverable | Dependencies |
-|---|---|---|
-| 1 | Opportunity Hub UI with Jobs, Housing, and Discounts tabs | Hub UI exists with mock data — needs real API routes |
-| 2 | Neon PostgreSQL and Prisma models for users, saved items, alerts, and ingestion | Schema exists — needs first migration run against Neon |
-| 3 | Discounts ingestion from OzBargain RSS | New: RSS parser + background worker |
-| 4 | Background worker for ingestion | New: cron/worker architecture on Northflank |
-| 5 | Saved items functionality linked to authenticated users | New: API routes for save/unsave + UI integration |
-| 6 | NextAuth authentication and Zoho SMTP email functionality | Auth done — Zoho SMTP integration is new |
+| # | Deliverable | Dependencies | Status |
+|---|---|---|---|
+| 1 | Opportunity Hub UI with Jobs, Housing, and Discounts tabs | Hub UI exists with mock data — needs real API routes | Pending |
+| 2 | Neon PostgreSQL and Prisma models for users, saved items, alerts, and ingestion | Schema exists — needs first migration run against Neon | Pending |
+| 3 | Discounts ingestion from OzBargain RSS | New: RSS parser + background worker | Pending |
+| 4 | Background worker for ingestion | New: cron/worker architecture on Northflank | Pending |
+| 5 | Saved items functionality linked to authenticated users | New: API routes for save/unsave + UI integration | Pending |
+| 6 | NextAuth authentication and Zoho SMTP email functionality | Auth done — Zoho SMTP integration is new | Pending |
+| 7 | Events feature — Sanity CMS event schema, events listing & detail pages, filters, bookmark/save, calendar integration, homepage events section | Sanity CMS | Done |
 
 ### Acceptance Criteria
 
