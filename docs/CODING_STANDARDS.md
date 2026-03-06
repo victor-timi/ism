@@ -70,6 +70,12 @@ Every form follows this pattern — no exceptions:
 - Never commit secrets (`.env`, credentials, API keys).
 - Sanitise user-generated content before rendering.
 
+## Build & CI
+
+- **Lint runs in build** — `pnpm build` executes `next lint --max-warnings 0` before `next build`. A lint failure blocks the build.
+- **Zero warnings policy** — ESLint is configured with `--max-warnings 0`. Fix warnings, don't suppress them.
+- **CI pipeline** — install → prisma generate → lint → type-check → test → build. All steps must pass.
+
 ## Commit Hygiene
 
 - Imperative mood in commit messages ("Add feature", not "Added feature").

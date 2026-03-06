@@ -35,34 +35,35 @@ export function GlassCard({
   style,
   as: Tag = "div",
 }: GlassCardProps) {
-  const tilt = useTilt3D(tiltStrength);
+  const { ref, onMouseMove, onMouseLeave, style: tiltStyle, mouseX, mouseY } =
+    useTilt3D(tiltStrength);
   const glareOpacity = useMotionValue(0);
 
   const glareBackground = useTransform(
-    [tilt.mouseX, tilt.mouseY],
+    [mouseX, mouseY],
     ([x, y]) =>
       `radial-gradient(circle at ${Number(x) * 100}% ${Number(y) * 100}%, rgba(255,255,255,0.35), transparent 60%)`,
   );
 
   const handleMove = useCallback(
     (e: ReactMouseEvent<HTMLDivElement>) => {
-      tilt.onMouseMove(e);
+      onMouseMove(e);
       glareOpacity.set(0.15);
     },
-    [tilt, glareOpacity],
+    [onMouseMove, glareOpacity],
   );
 
   const handleLeave = useCallback(() => {
-    tilt.onMouseLeave();
+    onMouseLeave();
     glareOpacity.set(0);
-  }, [tilt, glareOpacity]);
+  }, [onMouseLeave, glareOpacity]);
 
   return (
     <motion.div
-      ref={tilt.ref}
+      ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      style={tiltStrength > 0 ? tilt.style : undefined}
+      style={tiltStrength > 0 ? tiltStyle : undefined}
       className="group relative h-full"
     >
       {/* Glass glare layer */}

@@ -23,14 +23,14 @@ export function TiltWrapper({
   /** Tilt intensity in degrees. 0 disables. Default 8. */
   tiltStrength?: number;
 }) {
-  const tilt = useTilt3D(tiltStrength);
+  const { ref, onMouseMove, onMouseLeave, style } = useTilt3D(tiltStrength);
 
   return (
     <motion.div
-      ref={tilt.ref}
-      onMouseMove={tilt.onMouseMove}
-      onMouseLeave={tilt.onMouseLeave}
-      style={tilt.style}
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={style}
       className={className}
     >
       {children}
