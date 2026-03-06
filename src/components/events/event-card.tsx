@@ -44,6 +44,7 @@ export function EventCard({
     >
       <GlassCard
         gradient="from-amber-500/20 via-orange-400/10 to-transparent"
+        tiltStrength={0}
       >
         <Link
           href={`/hub/events/${event.slug}`}

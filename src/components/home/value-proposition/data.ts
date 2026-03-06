@@ -14,7 +14,7 @@ export const pillars = [
     description:
       "We pull listings from SEEK, Indeed, Jora and university job boards — then filter them for visa-friendly hours, casual & part-time roles, and locations near campuses. No more scrolling five different sites.",
     highlights: ["Visa-compliant hours", "Near your campus", "Updated daily"],
-    href: "/hub?tab=jobs",
+    href: "/hub/jobs",
     cta: "Browse jobs",
     stat: "2,400+",
     statLabel: "active listings",
@@ -27,7 +27,7 @@ export const pillars = [
     description:
       "Moving to a new city is stressful enough. We aggregate listings from Flatmates.com.au, Gumtree, and uni housing portals so you can compare prices, locations, and find housemates who get it.",
     highlights: ["Price comparison", "Near transport", "Housemate matching"],
-    href: "/hub?tab=housing",
+    href: "/hub/housing",
     cta: "Browse housing",
     stat: "890+",
     statLabel: "rooms available",
@@ -40,7 +40,7 @@ export const pillars = [
     description:
       "Your budget matters. We track deals from UNiDAYS, Student Beans, OzBargain and more — food, transport, tech, entertainment — ranked by what students actually use, not what companies want to push.",
     highlights: ["Food & groceries", "Tech & software", "Transport deals"],
-    href: "/hub?tab=discounts",
+    href: "/hub/discounts",
     cta: "Browse discounts",
     stat: "$320",
     statLabel: "avg. saved / month",

@@ -177,6 +177,22 @@
   body {
     @apply bg-background text-foreground;
   }
+  button,
+  [role="button"],
+  a,
+  input[type="submit"],
+  input[type="button"],
+  select,
+  summary {
+    cursor: pointer;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  textarea {
+    cursor: text;
+  }
 }
 
 /* ───────────────────────────────────────────
@@ -260,6 +276,50 @@
   .text-caption {
     font-size: clamp(0.75rem, 0.7rem + 0.15vw, 0.875rem);
     line-height: 1.5;
+  }
+
+  /* Nav ripple — water-drop hover effect */
+  .nav-ripple {
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    cursor: pointer;
+  }
+  .nav-ripple::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .nav-ripple:hover::after {
+    width: 200%;
+    height: 200%;
+  }
+
+  /* Nav active — emerald underline indicator */
+  .nav-active {
+    color: var(--ism-accent) !important;
+  }
+  .nav-active::before {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--ism-accent);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
   }
 
   /* Marquee scroll for FAQ hover */

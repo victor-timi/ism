@@ -36,7 +36,7 @@ export function FeaturedEventBanner({ event }: { event: SanityEvent }) {
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
-      <GlassCard gradient="from-amber-500/20 via-orange-400/10 to-transparent">
+      <GlassCard gradient="from-amber-500/20 via-orange-400/10 to-transparent" tiltStrength={0}>
         <div className="flex flex-col md:flex-row">
           {/* Image */}
           {event.image && (
@@ -94,8 +94,9 @@ export function FeaturedEventBanner({ event }: { event: SanityEvent }) {
             <div className="mt-6 flex items-center gap-3">
               {event.registrationUrl && (
                 <Button
+                  variant="ism"
                   asChild
-                  className="bg-amber-500 text-white hover:bg-amber-600"
+                  className="from-amber-500 to-amber-700 shadow-[0_0_16px_rgba(245,158,11,0.2),0_4px_12px_rgba(0,0,0,0.2)] hover:shadow-[0_0_24px_rgba(245,158,11,0.35),0_6px_20px_rgba(0,0,0,0.25)]"
                 >
                   <a
                     href={event.registrationUrl}

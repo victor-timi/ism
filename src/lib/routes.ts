@@ -11,9 +11,9 @@ export const ROUTES = {
 
   // Hub
   hub: "/hub",
-  hubJobs: "/hub?tab=jobs",
-  hubHousing: "/hub?tab=housing",
-  hubDiscounts: "/hub?tab=discounts",
+  hubJobs: "/hub/jobs",
+  hubHousing: "/hub/housing",
+  hubDiscounts: "/hub/discounts",
   hubEvents: "/hub/events",
 
   // Account (protected)

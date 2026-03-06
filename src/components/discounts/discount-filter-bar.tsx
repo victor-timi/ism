@@ -2,32 +2,10 @@
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useCallback } from "react";
+import { HiMagnifyingGlass } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
-
-const cities = [
-  { label: "All", value: "all" },
-  { label: "Sydney", value: "sydney" },
-  { label: "Melbourne", value: "melbourne" },
-  { label: "Brisbane", value: "brisbane" },
-  { label: "Perth", value: "perth" },
-  { label: "Adelaide", value: "adelaide" },
-];
-
-const categories = [
-  { label: "All", value: "all" },
-  { label: "Social", value: "social" },
-  { label: "Career", value: "career" },
-  { label: "Academic", value: "academic" },
-  { label: "Cultural", value: "cultural" },
-  { label: "Sports", value: "sports" },
-  { label: "Workshop", value: "workshop" },
-];
-
-const dateRanges = [
-  { label: "All Upcoming", value: "all" },
-  { label: "This Week", value: "week" },
-  { label: "This Month", value: "month" },
-];
+import { Input } from "@/components/ui/input";
+import { categories, discountTypes } from "./data";
 
 function PillGroup({
   label,
@@ -56,8 +34,8 @@ function PillGroup({
             onClick={() => onSelect(paramKey, item.value)}
             className={
               active === item.value
-                ? "rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/25 shadow-sm shadow-amber-500/10 hover:bg-amber-500/20"
-                : "rounded-full text-[var(--ism-fg-muted)] hover:border-amber-500/30 hover:text-amber-500"
+                ? "rounded-full bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/25 shadow-sm shadow-orange-500/10 hover:bg-orange-500/20"
+                : "rounded-full text-[var(--ism-fg-muted)] hover:border-orange-500/30 hover:text-orange-500"
             }
           >
             {item.label}
@@ -68,19 +46,19 @@ function PillGroup({
   );
 }
 
-export function EventFilterBar() {
+export function DiscountFilterBar() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const activeCity = searchParams.get("city") || "all";
   const activeCategory = searchParams.get("category") || "all";
-  const activeDateRange = searchParams.get("date") || "all";
+  const activeType = searchParams.get("type") || "all";
+  const searchQuery = searchParams.get("q") || "";
 
-  const handleSelect = useCallback(
+  const updateParams = useCallback(
     (key: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (value === "all") {
+      if (value === "all" || value === "") {
         params.delete(key);
       } else {
         params.set(key, value);
@@ -88,6 +66,13 @@ export function EventFilterBar() {
       router.push(`${pathname}?${params.toString()}`, { scroll: false });
     },
     [searchParams, router, pathname],
+  );
+
+  const handleSearch = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      updateParams("q", e.target.value);
+    },
+    [updateParams],
   );
 
   return (
@@ -99,27 +84,32 @@ export function EventFilterBar() {
         backdropFilter: "blur(12px)",
       }}
     >
-      <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
-        <PillGroup
-          label="City"
-          items={cities}
-          active={activeCity}
-          paramKey="city"
-          onSelect={handleSelect}
+      {/* Search input */}
+      <div className="relative mb-4">
+        <HiMagnifyingGlass className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--ism-fg-muted)]" />
+        <Input
+          type="text"
+          placeholder="Search deals, brands, or categories..."
+          defaultValue={searchQuery}
+          onChange={handleSearch}
+          className="h-10 rounded-xl border-white/[0.08] bg-transparent pl-10 text-[var(--ism-fg)] placeholder:text-[var(--ism-fg-muted)]/60 focus-visible:border-orange-500/40 focus-visible:ring-orange-500/20"
         />
+      </div>
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
         <PillGroup
           label="Category"
           items={categories}
           active={activeCategory}
           paramKey="category"
-          onSelect={handleSelect}
+          onSelect={updateParams}
         />
         <PillGroup
-          label="When"
-          items={dateRanges}
-          active={activeDateRange}
-          paramKey="date"
-          onSelect={handleSelect}
+          label="Discount Type"
+          items={discountTypes}
+          active={activeType}
+          paramKey="type"
+          onSelect={updateParams}
         />
       </div>
     </div>

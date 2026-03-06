@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "motion/react";
 import { HiOutlineBars3, HiXMark } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
@@ -14,11 +15,16 @@ import { ROUTES } from "@/lib/routes";
 
 export function Navigation() {
   const { data: session } = useSession();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
   const { scrollY } = useScroll();
+
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const isDropdownActive = (item: (typeof navItems)[number]) =>
+    item.children?.some((child) => isActive(child.href)) ?? false;
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
@@ -79,7 +85,7 @@ export function Navigation() {
               item.children ? (
                 <button
                   key={item.label}
-                  className="flex items-center gap-1 text-xs font-medium tracking-[0.15em] text-[var(--ism-fg)] uppercase transition-opacity hover:opacity-70"
+                  className={`nav-ripple flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium tracking-[0.15em] text-[var(--ism-fg)] uppercase ${isDropdownActive(item) ? "nav-active" : ""}`}
                   onMouseEnter={() => openDropdown(item.label)}
                 >
                   {item.label}
@@ -89,7 +95,7 @@ export function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-xs font-medium tracking-[0.15em] text-[var(--ism-fg)] uppercase transition-opacity hover:opacity-70"
+                  className={`nav-ripple px-3 py-1.5 rounded-lg text-xs font-medium tracking-[0.15em] text-[var(--ism-fg)] uppercase ${isActive(item.href) ? "nav-active" : ""}`}
                   onMouseEnter={closeDropdown}
                 >
                   {item.label}
@@ -186,10 +192,22 @@ export function Navigation() {
                           onClick={() => setActiveDropdown(null)}
                           className="group flex items-center gap-1.5 py-1.5 transition-opacity hover:opacity-70"
                         >
-                          <span className="text-base font-medium text-[var(--ism-fg)]">
+                          <span
+                            className={`text-base font-medium ${
+                              isActive(child.href)
+                                ? "text-emerald-600 dark:text-emerald-400"
+                                : "text-[var(--ism-fg)]"
+                            }`}
+                          >
                             {child.label}
                           </span>
-                          <ChevronRight className="size-3.5 text-[var(--ism-fg-muted)] transition-transform group-hover:translate-x-0.5" />
+                          <ChevronRight
+                            className={`size-3.5 transition-transform group-hover:translate-x-0.5 ${
+                              isActive(child.href)
+                                ? "text-emerald-500"
+                                : "text-[var(--ism-fg-muted)]"
+                            }`}
+                          />
                         </Link>
                       </motion.div>
                     ),
@@ -256,7 +274,13 @@ export function Navigation() {
                               onClick={() => setMenuOpen(false)}
                               className="block"
                             >
-                              <span className="text-2xl font-bold text-[var(--ism-fg)] transition-opacity hover:opacity-70">
+                              <span
+                                className={`text-2xl font-bold transition-opacity hover:opacity-70 ${
+                                  isActive(child.href)
+                                    ? "text-emerald-600 dark:text-emerald-400"
+                                    : "text-[var(--ism-fg)]"
+                                }`}
+                              >
                                 {child.label}
                               </span>
                               <span className="mt-0.5 block text-sm text-[var(--ism-fg-muted)]">

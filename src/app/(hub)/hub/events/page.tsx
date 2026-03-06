@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { client, upcomingEventsQuery, featuredEventQuery } from "@/lib/sanity";
 import { EventsContent } from "./events-content";
 import type { SanityEvent } from "@/types/event";
+import { mockEvents, mockFeaturedEvent } from "./mock-events";
 
 export const metadata: Metadata = {
   title: "Events",
@@ -15,5 +16,11 @@ export default async function EventsPage() {
     client.fetch<SanityEvent | null>(featuredEventQuery),
   ]);
 
-  return <EventsContent events={events} featuredEvent={featuredEvent} />;
+  // Use mock data for client review when Sanity has no published events
+  const displayEvents = events.length > 0 ? events : mockEvents;
+  const displayFeatured = featuredEvent ?? mockFeaturedEvent;
+
+  return (
+    <EventsContent events={displayEvents} featuredEvent={displayFeatured} />
+  );
 }
