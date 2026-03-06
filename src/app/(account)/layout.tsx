@@ -30,7 +30,7 @@ export default function AccountLayout({
           />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-5xl">
+        <div className="relative z-10">
           <motion.p
             className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
             variants={labelReveal}
@@ -48,7 +48,7 @@ export default function AccountLayout({
 
       {/* Nav pills */}
       <div className="border-b border-[var(--ism-border)] px-6 lg:px-12 xl:px-16">
-        <div className="mx-auto max-w-5xl">
+        <div>
           <nav className="flex gap-1 overflow-x-auto">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
@@ -72,7 +72,7 @@ export default function AccountLayout({
       </div>
 
       {/* Page content */}
-      <div className="mx-auto max-w-5xl px-6 py-10 lg:px-12 lg:py-14 xl:px-16">
+      <div className="px-6 py-10 lg:px-12 lg:py-14 xl:px-16">
         {children}
       </div>
     </div>

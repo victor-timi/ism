@@ -66,7 +66,7 @@ function EventsInner({
           />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="relative z-10">
           <motion.p
             className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-500"
             variants={labelReveal}
@@ -93,7 +93,7 @@ function EventsInner({
 
       {/* Main Content */}
       <section className="bg-[var(--ism-bg)] px-6 py-8 lg:px-12 lg:py-12 xl:px-16">
-        <div className="mx-auto max-w-7xl">
+        <div>
           <EventFilterBar />
 
           {/* Featured event */}

@@ -22,7 +22,7 @@ export async function UpcomingEvents() {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl">
+      <div className="relative z-10">
         <p className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-500">
           Upcoming Events
         </p>

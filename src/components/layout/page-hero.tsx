@@ -39,7 +39,7 @@ export function PageHero({ label, title, description, children }: PageHeroProps)
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-4xl text-center">
+      <div className="relative z-10 text-center">
         <motion.p
           className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
           variants={labelReveal}

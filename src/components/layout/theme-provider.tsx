@@ -13,8 +13,8 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 function getStoredTheme(): Theme {
-  if (typeof window === "undefined") return "light";
-  return (localStorage.getItem("ism-theme") as Theme) || "light";
+  if (typeof window === "undefined") return "dark";
+  return (localStorage.getItem("ism-theme") as Theme) || "dark";
 }
 
 function resolveTheme(theme: Theme): "light" | "dark" {

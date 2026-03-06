@@ -27,7 +27,7 @@ export default function BlogPage() {
       />
 
       <section className="bg-[var(--ism-bg)] px-6 py-16 lg:px-12 lg:py-24 xl:px-16">
-        <div className="mx-auto max-w-6xl">
+        <div>
           {/* Featured post */}
           {featured && <BlogCard post={featured} index={0} featured />}
 

@@ -91,7 +91,7 @@ export function EventDetailContent({
         )}
 
         <div
-          className={`relative z-10 mx-auto max-w-4xl px-6 lg:px-12 xl:px-16 ${event.image ? "-mt-24" : "pt-28 lg:pt-36"} pb-8`}
+          className={`relative z-10 px-6 lg:px-12 xl:px-16 ${event.image ? "-mt-24" : "pt-28 lg:pt-36"} pb-8`}
         >
           {/* Back link */}
           <motion.div
@@ -194,7 +194,7 @@ export function EventDetailContent({
 
       {/* Action Row + Body */}
       <section className="bg-[var(--ism-bg)] px-6 pb-16 lg:px-12 xl:px-16">
-        <div className="mx-auto max-w-4xl">
+        <div>
           {/* Action row */}
           <motion.div
             className="flex flex-wrap items-center gap-3 border-y border-[var(--ism-border)] py-4"

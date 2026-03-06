@@ -66,7 +66,7 @@ export default function ContactPage() {
 
       {/* Form + Info */}
       <section className="bg-[var(--ism-bg)] px-6 py-24 lg:px-12 lg:py-36 xl:px-16">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_380px] lg:gap-16">
+        <div className="grid gap-12 lg:grid-cols-[1fr_380px] lg:gap-16">
           {/* Contact Form */}
           <motion.div
             variants={cardVariants}
@@ -251,8 +251,8 @@ export default function ContactPage() {
 
       {/* Contact FAQ */}
       <section className="bg-[var(--ism-bg)] px-6 py-24 lg:px-12 lg:py-36 xl:px-16">
-        <div className="mx-auto max-w-3xl">
-          <div className="text-center">
+        <div>
+          <div className="mx-auto max-w-3xl text-center">
             <motion.p
               className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
               variants={labelReveal}

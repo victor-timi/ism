@@ -27,7 +27,7 @@ export default function CommunityPage() {
 
       {/* Features */}
       <section className="bg-[var(--ism-bg)] px-6 py-24 lg:px-12 lg:py-36 xl:px-16">
-        <div className="mx-auto max-w-6xl">
+        <div>
           <div className="grid gap-8 md:grid-cols-3">
             {features.map((feature, i) => (
               <motion.div
@@ -63,7 +63,7 @@ export default function CommunityPage() {
 
       {/* Stats */}
       <section className="bg-[var(--ism-bg)] px-6 py-16 lg:px-12 lg:py-24 xl:px-16">
-        <div className="mx-auto max-w-4xl">
+        <div>
           <motion.div
             className="grid grid-cols-3 gap-8 text-center"
             initial={{ opacity: 0, y: 20 }}
