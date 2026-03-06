@@ -29,6 +29,7 @@ import { FaqItem } from "@/components/home/faq/faq-item";
 import {
   cardVariants,
   labelReveal,
+  bodyFade,
 } from "@/components/animations/variants";
 import { RevealHeading } from "@/components/home/value-proposition/reveal-heading";
 import { useAppMutation } from "@/lib/hooks/use-app-mutation";
@@ -59,15 +60,69 @@ export default function ContactPage() {
     <>
       {/* Hero */}
       <PageHero
+        align="left"
+        headingClass="text-h1"
         label="Get In Touch"
         title="We'd love to hear from you."
         description="Questions, feedback, or partnership ideas — we're all ears."
       />
 
-      {/* Form + Info */}
+      {/* Contact Info Bar */}
+      <motion.div
+        className="border-y border-[var(--ism-border)] bg-[var(--ism-bg)] px-6 py-5 lg:px-12 xl:px-16"
+        variants={bodyFade}
+        initial="hidden"
+        animate="visible"
+      >
+        <div className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-12 lg:gap-16">
+          {infoCards.map((card) => (
+            <div key={card.title} className="flex items-center gap-3">
+              <card.icon className="h-5 w-5 shrink-0 text-emerald-500" />
+              <div>
+                <span className="text-sm font-bold text-[var(--ism-fg)]">
+                  {card.description}
+                </span>
+                <span className="ml-1.5 text-xs text-[var(--ism-fg-muted)]">
+                  {card.detail}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Form Section — copy left, form right */}
       <section className="bg-[var(--ism-bg)] px-6 py-24 lg:px-12 lg:py-36 xl:px-16">
-        <div className="grid gap-12 lg:grid-cols-[1fr_380px] lg:gap-16">
-          {/* Contact Form */}
+        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Left — Copy */}
+          <div>
+            <motion.p
+              className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
+              variants={labelReveal}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+            >
+              Send a Message
+            </motion.p>
+            <RevealHeading
+              text="Let's start a conversation."
+              className="text-h2 mt-4 text-[var(--ism-fg)]"
+            />
+            <motion.p
+              className="text-body-lg mt-5 text-[var(--ism-fg-muted)]"
+              variants={bodyFade}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+            >
+              Whether you have a question about the platform, want to report a
+              problem, or are interested in partnering with us — fill out the
+              form and we&apos;ll get back to you within 24 hours.
+            </motion.p>
+          </div>
+
+          {/* Right — Form */}
           <motion.div
             variants={cardVariants}
             custom={0}
@@ -75,7 +130,7 @@ export default function ContactPage() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <GlassCard className="p-8 lg:p-10">
+            <GlassCard className="p-8 lg:p-10" tiltStrength={5}>
               {submitted ? (
                 <div className="flex flex-col items-center py-12 text-center">
                   <div
@@ -207,52 +262,13 @@ export default function ContactPage() {
               )}
             </GlassCard>
           </motion.div>
-
-          {/* Info Cards */}
-          <div className="space-y-6">
-            {infoCards.map((card, i) => (
-              <motion.div
-                key={card.title}
-                variants={cardVariants}
-                custom={i + 1}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                <GlassCard className="p-6" gradient={card.gradient}>
-                  <div className="flex items-start gap-4">
-                    <div
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, rgba(4,120,87,0.15) 0%, rgba(16,185,129,0.08) 100%)",
-                      }}
-                    >
-                      <card.icon className="h-5 w-5 text-[var(--ism-accent)]" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-[var(--ism-fg)]">
-                        {card.title}
-                      </h3>
-                      <p className="mt-0.5 text-sm font-medium text-[var(--ism-accent)]">
-                        {card.description}
-                      </p>
-                      <p className="mt-1 text-xs text-[var(--ism-fg-muted)]">
-                        {card.detail}
-                      </p>
-                    </div>
-                  </div>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* Contact FAQ */}
       <section className="bg-[var(--ism-bg)] px-6 py-24 lg:px-12 lg:py-36 xl:px-16">
         <div>
-          <div className="mx-auto max-w-3xl text-center">
+          <div>
             <motion.p
               className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
               variants={labelReveal}

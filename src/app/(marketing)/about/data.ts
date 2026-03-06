@@ -64,7 +64,7 @@ export const offerings: Offering[] = [
     title: "Discounts",
     description:
       "Exclusive student deals from Australian brands — food, tech, transport, and more.",
-    gradient: "from-violet-500/20 via-purple-400/10 to-transparent",
+    gradient: "from-orange-500/20 via-amber-400/10 to-transparent",
   },
 ];
 

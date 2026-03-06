@@ -20,6 +20,8 @@ export default function CommunityPage() {
   return (
     <>
       <PageHero
+        align="left"
+        headingClass="text-h1"
         label="Community"
         title="You're not alone in this."
         description="Connect with international students who understand exactly what you're going through."

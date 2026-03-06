@@ -9,9 +9,20 @@ interface PageHeroProps {
   title: string;
   description?: string;
   children?: React.ReactNode;
+  align?: "center" | "left";
+  headingClass?: string;
 }
 
-export function PageHero({ label, title, description, children }: PageHeroProps) {
+export function PageHero({
+  label,
+  title,
+  description,
+  children,
+  align = "center",
+  headingClass = "text-h2",
+}: PageHeroProps) {
+  const isLeft = align === "left";
+
   return (
     <section className="ism-grain relative overflow-hidden bg-[var(--ism-bg)] px-6 pt-32 pb-16 lg:px-12 lg:pt-40 lg:pb-24 xl:px-16">
       {/* Ambient emerald glow */}
@@ -39,7 +50,9 @@ export function PageHero({ label, title, description, children }: PageHeroProps)
         }}
       />
 
-      <div className="relative z-10 text-center">
+      <div
+        className={`relative z-10 ${isLeft ? "max-w-4xl" : "text-center"}`}
+      >
         <motion.p
           className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
           variants={labelReveal}
@@ -51,12 +64,14 @@ export function PageHero({ label, title, description, children }: PageHeroProps)
 
         <RevealHeading
           text={title}
-          className="text-h2 mt-4 text-[var(--ism-fg)]"
+          className={`${headingClass} mt-4 text-[var(--ism-fg)]`}
         />
 
         {description && (
           <motion.p
-            className="text-body-lg mx-auto mt-5 max-w-2xl text-[var(--ism-fg-muted)]"
+            className={`text-body-lg mt-5 max-w-xl text-[var(--ism-fg-muted)] ${
+              !isLeft ? "mx-auto max-w-2xl" : ""
+            }`}
             variants={bodyFade}
             initial="hidden"
             animate="visible"

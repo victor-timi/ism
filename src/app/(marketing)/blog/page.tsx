@@ -21,6 +21,8 @@ export default function BlogPage() {
   return (
     <>
       <PageHero
+        align="left"
+        headingClass="text-h1"
         label="Blog"
         title="Guides, tips & student news."
         description="Everything you need to thrive as an international student in Australia."

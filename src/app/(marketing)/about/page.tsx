@@ -21,6 +21,8 @@ export default function AboutPage() {
     <>
       {/* Hero */}
       <PageHero
+        align="left"
+        headingClass="text-h1"
         label="About Us"
         title="Built for students, by students."
         description="ISM is on a mission to make student life in Australia easier — one listing at a time."
@@ -90,23 +92,21 @@ export default function AboutPage() {
       {/* What We Offer */}
       <section className="bg-[var(--ism-bg)] px-6 py-24 lg:px-12 lg:py-36 xl:px-16">
         <div>
-          <div className="text-center">
-            <motion.p
-              className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
-              variants={labelReveal}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-            >
-              What We Offer
-            </motion.p>
-            <RevealHeading
-              text="Three pillars. One platform."
-              className="text-h2 mt-4 text-[var(--ism-fg)]"
-            />
-          </div>
+          <motion.p
+            className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
+            variants={labelReveal}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+          >
+            What We Offer
+          </motion.p>
+          <RevealHeading
+            text="Three pillars. One platform."
+            className="text-h2 mt-4 text-[var(--ism-fg)]"
+          />
 
-          <div className="mt-16 grid gap-8 md:grid-cols-3">
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
             {offerings.map((item, i) => (
               <motion.div
                 key={item.title}
@@ -116,7 +116,7 @@ export default function AboutPage() {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-40px" }}
               >
-                <GlassCard className="p-8" gradient={item.gradient}>
+                <GlassCard className="p-8" gradient={item.gradient} tiltStrength={5}>
                   <div
                     className="flex h-12 w-12 items-center justify-center rounded-xl"
                     style={{
@@ -142,23 +142,21 @@ export default function AboutPage() {
       {/* Story Timeline */}
       <section className="bg-[var(--ism-bg)] px-6 py-24 lg:px-12 lg:py-36 xl:px-16">
         <div>
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.p
-              className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
-              variants={labelReveal}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-            >
-              Our Story
-            </motion.p>
-            <RevealHeading
-              text="How we got here."
-              className="text-h2 mt-4 text-[var(--ism-fg)]"
-            />
-          </div>
+          <motion.p
+            className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"
+            variants={labelReveal}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+          >
+            Our Story
+          </motion.p>
+          <RevealHeading
+            text="How we got here."
+            className="text-h2 mt-4 text-[var(--ism-fg)]"
+          />
 
-          <div className="relative mt-16">
+          <div className="relative mt-12">
             {/* Connecting line */}
             <div className="absolute left-6 top-0 bottom-0 w-px bg-[var(--ism-border)] md:left-8" />
 

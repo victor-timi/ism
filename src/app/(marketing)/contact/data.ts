@@ -33,7 +33,7 @@ export const infoCards: InfoCard[] = [
     title: "Response Time",
     description: "Within 24 hours",
     detail: "Mon–Fri, 9 AM – 5 PM AEST.",
-    gradient: "from-violet-500/20 via-purple-400/10 to-transparent",
+    gradient: "from-amber-500/20 via-amber-400/10 to-transparent",
   },
 ];
 
