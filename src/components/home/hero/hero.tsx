@@ -16,6 +16,7 @@ import { AnimatedHeading } from "./animated-heading";
 import { HeroIllustration } from "./hero-illustration";
 import { GrowthChart } from "./growth-chart";
 import { useTypewriter } from "./use-typewriter";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { ROUTES } from "@/lib/routes";
 
 const TAGLINE = "For Students. By Students.";
@@ -26,6 +27,10 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const subtitleRef = useRef<HTMLDivElement>(null);
   const subtitleInView = useInView(subtitleRef, { once: false, margin: "-60px" });
+  const lite = useReducedMotion();
+
+  // On lite mode: no replay, animate once only
+  const once = lite ? true : false;
 
   const taglineTyped = useTypewriter(TAGLINE, subtitleInView, 30);
   const descTyped = useTypewriter(DESCRIPTION, subtitleInView, 15);
@@ -34,8 +39,8 @@ export function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const headingY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const headingY = useTransform(scrollYProgress, [0, 1], [0, lite ? 0 : 80]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.4], [1, lite ? 1 : 0]);
 
   return (
     <section
@@ -44,7 +49,7 @@ export function Hero() {
     >
       <HeroIllustration />
 
-      {/* Ambient gradient washes */}
+      {/* Ambient gradient washes — skip blur on low-end devices */}
       <div className="pointer-events-none absolute inset-0 z-0">
         {/* Top-right emerald glow */}
         <motion.div
@@ -52,12 +57,12 @@ export function Hero() {
           style={{
             background:
               "radial-gradient(circle, rgba(4,120,87,0.12) 0%, rgba(4,120,87,0.04) 40%, transparent 70%)",
-            filter: "blur(80px)",
+            filter: lite ? undefined : "blur(80px)",
           }}
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once }}
+          transition={{ duration: lite ? 0.5 : 2, ease: [0.22, 1, 0.36, 1] }}
         />
         {/* Left-center softer wash */}
         <motion.div
@@ -65,12 +70,12 @@ export function Hero() {
           style={{
             background:
               "radial-gradient(circle, rgba(4,120,87,0.07) 0%, transparent 65%)",
-            filter: "blur(80px)",
+            filter: lite ? undefined : "blur(80px)",
           }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: false }}
-          transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          viewport={{ once }}
+          transition={{ duration: lite ? 0.5 : 2.5, ease: [0.22, 1, 0.36, 1], delay: lite ? 0 : 0.3 }}
         />
         {/* Right-center indigo glow */}
         <motion.div
@@ -78,12 +83,12 @@ export function Hero() {
           style={{
             background:
               "radial-gradient(circle, rgba(99,102,241,0.07) 0%, rgba(99,102,241,0.02) 40%, transparent 70%)",
-            filter: "blur(90px)",
+            filter: lite ? undefined : "blur(90px)",
           }}
           initial={{ opacity: 0, scale: 0.7 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false }}
-          transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+          viewport={{ once }}
+          transition={{ duration: lite ? 0.5 : 2.5, ease: [0.22, 1, 0.36, 1], delay: lite ? 0 : 0.5 }}
         />
         {/* Bottom subtle tint */}
         <div
@@ -95,15 +100,17 @@ export function Hero() {
         />
       </div>
 
-      {/* Subtle dot grid pattern */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[0] opacity-[0.03] dark:opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, var(--ism-fg) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
+      {/* Subtle dot grid pattern — hidden on low-end devices */}
+      {!lite && (
+        <div
+          className="pointer-events-none absolute inset-0 z-[0] opacity-[0.03] dark:opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, var(--ism-fg) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+      )}
 
       <div className="relative z-10 flex flex-1 flex-col">
         {/* Heading zone */}
@@ -122,24 +129,26 @@ export function Hero() {
             >
               <AnimatedHeading
                 text="JOIN THE"
-                delay={0.3}
+                delay={lite ? 0 : 0.3}
                 className="text-[var(--ism-fg)]"
+                simple={lite}
               />
               <AnimatedHeading
                 text="MOVEMENT"
-                delay={0.65}
+                delay={lite ? 0.1 : 0.65}
                 className="text-[var(--ism-accent)]"
                 style={{ fontSize: "min(1em, calc((100vw - 48px) / 5.5))" }}
+                simple={lite}
               />
             </h1>
 
-            {/* Full name */}
+            {/* Full name — no delay on lite to avoid blocking LCP */}
             <motion.p
               className="mt-3 text-xs font-semibold uppercase tracking-[0.3em] text-[var(--ism-fg-muted)] sm:text-sm lg:mt-4 lg:text-base"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-60px" }}
-              transition={{ duration: 0.6, ease, delay: 1 }}
+              viewport={{ once, margin: "-60px" }}
+              transition={{ duration: lite ? 0.3 : 0.6, ease, delay: lite ? 0.2 : 1 }}
             >
               International Students Movement
             </motion.p>
@@ -153,8 +162,8 @@ export function Hero() {
               }}
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
-              viewport={{ once: false }}
-              transition={{ duration: 1.2, ease }}
+              viewport={{ once }}
+              transition={{ duration: lite ? 0.4 : 1.2, ease }}
             />
 
             {/* Subtitle + CTAs */}
@@ -163,8 +172,8 @@ export function Hero() {
               className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between lg:mt-8"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-60px" }}
-              transition={{ duration: 0.7, ease }}
+              viewport={{ once, margin: "-60px" }}
+              transition={{ duration: lite ? 0.4 : 0.7, ease }}
             >
               <div>
                 <div className="relative">
@@ -197,8 +206,8 @@ export function Hero() {
                 className="flex shrink-0 items-center gap-3"
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.5, ease, delay: 0.3 }}
+                viewport={{ once }}
+                transition={{ duration: 0.5, ease, delay: lite ? 0 : 0.3 }}
               >
                 <Button variant="ism" size="lg" asChild>
                   <Link href={ROUTES.hub}>Explore the Hub</Link>
@@ -242,10 +251,10 @@ export function Hero() {
                     ? "col-span-2 sm:col-span-1"
                     : ""
                 }`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: 0.1 * i, duration: 0.5, ease }}
+                initial={lite ? undefined : { opacity: 0, y: 20 }}
+                whileInView={lite ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once }}
+                transition={lite ? undefined : { delay: 0.1 * i, duration: 0.5, ease }}
               >
                 <Counter
                   value={stat.value}

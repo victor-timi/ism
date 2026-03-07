@@ -8,12 +8,31 @@ export function AnimatedHeading({
   delay = 0,
   className,
   style,
+  simple = false,
 }: {
   text: string;
   delay?: number;
   className?: string;
   style?: React.CSSProperties;
+  simple?: boolean;
 }) {
+  // Simple mode: fade in the whole word as one block (no per-character animation)
+  if (simple) {
+    return (
+      <motion.span
+        className={`block ${className ?? ""}`}
+        style={style}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease, delay }}
+        aria-label={text}
+      >
+        {text}
+      </motion.span>
+    );
+  }
+
   return (
     <motion.span
       className={`block ${className ?? ""}`}
