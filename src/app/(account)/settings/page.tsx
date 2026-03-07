@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { useSession } from "next-auth/react";
 import { motion } from "motion/react";
 import { HiUser } from "react-icons/hi2";
@@ -14,6 +15,11 @@ import { themeOptions } from "./data";
 export default function SettingsPage() {
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const name = session?.user?.name || "Not set";
   const email = session?.user?.email || "Not set";
   const initials = name
@@ -76,7 +82,7 @@ export default function SettingsPage() {
 
           <div className="grid grid-cols-3 gap-4">
             {themeOptions.map((option) => {
-              const isActive = theme === option.value;
+              const isActive = mounted && theme === option.value;
               return (
                 <button
                   key={option.value}

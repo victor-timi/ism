@@ -214,7 +214,7 @@ export default function ContactPage() {
                                 <SelectValue placeholder="Select a subject" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent position="popper">
                               {CONTACT_SUBJECTS.map((subject) => (
                                 <SelectItem
                                   key={subject.value}
