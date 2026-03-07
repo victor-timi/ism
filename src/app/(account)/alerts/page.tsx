@@ -96,7 +96,6 @@ export default function AlertsPage() {
           title="Create more alerts"
           description="Set up alerts for housing, discounts, or specific keywords to never miss a listing."
           actionLabel="Create Your First Alert"
-          actionHref="#"
         />
       </div>
     </div>

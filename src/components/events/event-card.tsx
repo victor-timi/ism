@@ -8,6 +8,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { cardVariants } from "@/components/animations/variants";
 import { urlFor } from "@/lib/sanity";
+import { ROUTES } from "@/lib/routes";
 import type { SanityEvent } from "@/types/event";
 
 function formatEventDate(iso: string): string {
@@ -47,7 +48,7 @@ export function EventCard({
         tiltStrength={0}
       >
         <Link
-          href={`/hub/events/${event.slug}`}
+          href={`${ROUTES.hubEvents}/${event.slug}`}
           className="flex h-full flex-col"
         >
           {/* Cover image */}

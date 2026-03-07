@@ -1,11 +1,9 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcryptjs from "bcryptjs";
-import { prisma } from "./prisma";
+import { findUserByEmail } from "./mock-db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   pages: {
     signIn: "/sign-in",
@@ -21,11 +19,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
-
-        if (!user?.passwordHash) return null;
+        const user = await findUserByEmail(credentials.email as string);
+        if (!user) return null;
 
         const isValid = await bcryptjs.compare(
           credentials.password as string,

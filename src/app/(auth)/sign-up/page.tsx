@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
+import { FormAlert } from "@/components/ui/form-alert";
 import {
   Form,
   FormField,
@@ -50,7 +52,7 @@ export default function SignUpPage() {
       }
     },
     onSuccess: () => {
-      router.push("/");
+      router.push(ROUTES.home);
       router.refresh();
     },
   });
@@ -71,11 +73,7 @@ export default function SignUpPage() {
           onSubmit={form.handleSubmit((data) => mutate(data))}
           className="mt-8 space-y-5"
         >
-          {errorMessage && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
-              {errorMessage}
-            </div>
-          )}
+          <FormAlert message={errorMessage} />
 
           <FormField
             control={form.control}
@@ -125,9 +123,8 @@ export default function SignUpPage() {
               <FormItem>
                 <FormLabel className="text-[var(--ism-fg)]">Password</FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     {...field}
-                    type="password"
                     autoComplete="new-password"
                     placeholder="Min. 8 characters"
                     className="h-11"
@@ -147,9 +144,8 @@ export default function SignUpPage() {
                   Confirm Password
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     {...field}
-                    type="password"
                     autoComplete="new-password"
                     placeholder="Repeat your password"
                     className="h-11"
@@ -165,9 +161,9 @@ export default function SignUpPage() {
             variant="ism"
             size="lg"
             className="w-full"
-            disabled={isPending}
+            loading={isPending}
           >
-            {isPending ? "Creating account..." : "Create Account"}
+            Create Account
           </Button>
         </form>
       </Form>

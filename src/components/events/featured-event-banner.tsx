@@ -8,6 +8,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { urlFor } from "@/lib/sanity";
+import { ROUTES } from "@/lib/routes";
 import type { SanityEvent } from "@/types/event";
 
 function formatEventDate(iso: string): string {
@@ -108,7 +109,7 @@ export function FeaturedEventBanner({ event }: { event: SanityEvent }) {
                 </Button>
               )}
               <Button variant="outline" asChild>
-                <Link href={`/hub/events/${event.slug}`}>View Details</Link>
+                <Link href={`${ROUTES.hubEvents}/${event.slug}`}>View Details</Link>
               </Button>
             </div>
           </div>

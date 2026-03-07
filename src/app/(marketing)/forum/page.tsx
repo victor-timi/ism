@@ -148,9 +148,9 @@ export default function ForumPage() {
               type="submit"
               variant="ism"
               size="lg"
-              disabled={isPending}
+              loading={isPending}
             >
-              {isPending ? "..." : "Notify Me"}
+              Notify Me
             </Button>
           </motion.form>
         </div>

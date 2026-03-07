@@ -8,6 +8,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { bodyFade, cardVariants } from "@/components/animations/variants";
+import { ROUTES } from "@/lib/routes";
 
 interface Feature {
   title: string;
@@ -32,7 +33,7 @@ export function ComingSoonPage({
   icon: Icon,
   features,
   actionLabel = "Back to Home",
-  actionHref = "/",
+  actionHref = ROUTES.home,
   compact = false,
 }: ComingSoonPageProps) {
   if (compact) {

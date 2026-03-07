@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import bcryptjs from "bcryptjs";
-import { prisma } from "@/lib/prisma";
 import { registerBodySchema } from "@/lib/validations";
+import { findUserByEmail, createUser } from "@/lib/mock-db";
 
 export async function POST(req: Request) {
   try {
@@ -23,19 +22,12 @@ export async function POST(req: Request) {
 
     const { name, email, password } = result.data;
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-
+    const existingUser = await findUserByEmail(email);
     if (existingUser) {
       return NextResponse.json({ error: "Email already in use" }, { status: 409 });
     }
 
-    const passwordHash = await bcryptjs.hash(password, 12);
-
-    const user = await prisma.user.create({
-      data: { name, email, passwordHash },
-    });
+    const user = await createUser(name, email, password);
 
     return NextResponse.json(
       { user: { id: user.id, name: user.name, email: user.email } },

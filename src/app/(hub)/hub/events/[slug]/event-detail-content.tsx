@@ -22,6 +22,7 @@ import {
   downloadICalFile,
 } from "@/lib/calendar";
 import { useBookmarkEvent } from "./use-bookmark-event";
+import { ROUTES } from "@/lib/routes";
 import type { SanityEvent } from "@/types/event";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -100,7 +101,7 @@ export function EventDetailContent({
             transition={{ duration: 0.5, ease }}
           >
             <Link
-              href="/hub/events"
+              href={ROUTES.hubEvents}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--ism-fg-muted)] transition-colors hover:text-amber-500"
             >
               <HiArrowLeft className="h-4 w-4" />
@@ -236,7 +237,7 @@ export function EventDetailContent({
               variant="outline"
               size="sm"
               onClick={toggle}
-              disabled={loading}
+              loading={loading}
               className={isSaved ? "text-amber-500 border-amber-500/30" : ""}
             >
               <HiBookmark className="mr-1.5 h-4 w-4" />

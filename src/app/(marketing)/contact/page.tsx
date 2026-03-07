@@ -10,6 +10,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { FormAlert } from "@/components/ui/form-alert";
 import {
   Select,
   SelectContent,
@@ -155,11 +156,7 @@ export default function ContactPage() {
                     onSubmit={form.handleSubmit((data) => mutate(data))}
                     className="space-y-5"
                   >
-                    {errorMessage && (
-                      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
-                        {errorMessage}
-                      </div>
-                    )}
+                    <FormAlert message={errorMessage} />
 
                     <div className="grid gap-5 sm:grid-cols-2">
                       <FormField
@@ -253,9 +250,9 @@ export default function ContactPage() {
                       variant="ism"
                       size="lg"
                       className="w-full"
-                      disabled={isPending}
+                      loading={isPending}
                     >
-                      {isPending ? "Sending..." : "Send Message"}
+                      Send Message
                     </Button>
                   </form>
                 </Form>

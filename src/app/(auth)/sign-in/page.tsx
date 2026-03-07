@@ -8,6 +8,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
+import { FormAlert } from "@/components/ui/form-alert";
 import {
   Form,
   FormField,
@@ -55,11 +57,7 @@ function SignInForm() {
         onSubmit={form.handleSubmit((data) => mutate(data))}
         className="space-y-5"
       >
-        {errorMessage && (
-          <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
-            {errorMessage}
-          </div>
-        )}
+        <FormAlert message={errorMessage} />
 
         <FormField
           control={form.control}
@@ -88,9 +86,8 @@ function SignInForm() {
             <FormItem>
               <FormLabel className="text-[var(--ism-fg)]">Password</FormLabel>
               <FormControl>
-                <Input
+                <PasswordInput
                   {...field}
-                  type="password"
                   autoComplete="current-password"
                   placeholder="Your password"
                   className="h-11"
@@ -106,9 +103,9 @@ function SignInForm() {
           variant="ism"
           size="lg"
           className="w-full"
-          disabled={isPending}
+          loading={isPending}
         >
-          {isPending ? "Signing in..." : "Sign In"}
+          Sign In
         </Button>
       </form>
     </Form>

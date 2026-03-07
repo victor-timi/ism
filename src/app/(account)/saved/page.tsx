@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { HiBookmark } from "react-icons/hi2";
 import { PremiumEmptyState } from "@/components/ui/premium-empty-state";
+import { ROUTES } from "@/lib/routes";
 import { filters } from "./data";
 
 export default function SavedPage() {
@@ -35,7 +36,7 @@ export default function SavedPage() {
           title="No saved items yet"
           description="Browse listings in the Hub and click the bookmark icon to save them here for later."
           actionLabel="Browse the Hub"
-          actionHref="/hub"
+          actionHref={ROUTES.hub}
         />
       </div>
     </div>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRef, useCallback } from "react";
 import { Logo } from "@/components/ui/logo";
+import { ROUTES } from "@/lib/routes";
 
 export function LogoTilt({ onHover }: { onHover?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -28,7 +29,7 @@ export function LogoTilt({ onHover }: { onHover?: () => void }) {
 
   return (
     <Link
-      href="/"
+      href={ROUTES.home}
       className="relative z-50"
       onMouseEnter={onHover}
     >

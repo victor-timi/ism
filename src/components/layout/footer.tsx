@@ -117,9 +117,9 @@ export function Footer() {
                 variant="ism"
                 size="default"
                 className="shrink-0"
-                disabled={isPending}
+                loading={isPending}
               >
-                {isPending ? "..." : "Subscribe"}
+                Subscribe
               </Button>
             </form>
           </div>
