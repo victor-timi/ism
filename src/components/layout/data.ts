@@ -23,7 +23,6 @@ export const browseLinks = [
 export const resourceLinks = [
   { label: "About", href: ROUTES.about },
   { label: "Blog", href: ROUTES.blog },
-  { label: "Community", href: ROUTES.community },
   { label: "Forum", href: ROUTES.forum },
 ];
 

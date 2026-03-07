@@ -13,6 +13,7 @@ export default function TermsPage() {
       <PageHero
         align="left"
         headingClass="text-h1"
+        className="max-w-5xl"
         label="Terms of Service"
         title="Terms you can actually understand."
         description="Plain-language terms that protect both you and the platform."

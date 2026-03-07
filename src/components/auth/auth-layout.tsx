@@ -51,7 +51,7 @@ const signUpContent: VariantContent = {
     </>
   ),
   description:
-    "One platform for jobs, housing, and student discounts across Australia. Free forever.",
+    "One platform for jobs, housing, events, and student discounts across Australia. Free forever.",
   stats: [
     {
       value: "833K+",

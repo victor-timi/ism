@@ -130,7 +130,7 @@ export default function ContactPage() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <GlassCard className="p-8 lg:p-10" tiltStrength={5}>
+            <GlassCard className="p-8 lg:p-10" tiltStrength={0}>
               {submitted ? (
                 <div className="flex flex-col items-center py-12 text-center">
                   <div

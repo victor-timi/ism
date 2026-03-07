@@ -44,11 +44,6 @@ export const navItems: NavItem[] = [
         href: ROUTES.blog,
         description: "Guides, tips & student news",
       },
-      {
-        label: "Community",
-        href: ROUTES.community,
-        description: "Connect with other students",
-      },
     ],
   },
   { label: "Forum", href: ROUTES.forum },

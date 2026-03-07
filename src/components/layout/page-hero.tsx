@@ -11,6 +11,7 @@ interface PageHeroProps {
   children?: React.ReactNode;
   align?: "center" | "left";
   headingClass?: string;
+  className?: string;
 }
 
 export function PageHero({
@@ -20,6 +21,7 @@ export function PageHero({
   children,
   align = "center",
   headingClass = "text-h2",
+  className,
 }: PageHeroProps) {
   const isLeft = align === "left";
 
@@ -51,7 +53,7 @@ export function PageHero({
       />
 
       <div
-        className={`relative z-10 ${isLeft ? "max-w-4xl" : "text-center"}`}
+        className={`relative z-10 ${isLeft ? className ?? "max-w-4xl" : "text-center"}`}
       >
         <motion.p
           className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--ism-accent)]"

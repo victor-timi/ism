@@ -24,7 +24,6 @@ export const ROUTES = {
   // Marketing
   about: "/about",
   blog: "/blog",
-  community: "/community",
   forum: "/forum",
   contact: "/contact",
 
