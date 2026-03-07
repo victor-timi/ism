@@ -115,7 +115,7 @@ export function Hero() {
             <h1
               className="font-extrabold"
               style={{
-                fontSize: "clamp(3.5rem, 2rem + 8vw, 11rem)",
+                fontSize: "clamp(2.5rem, 2rem + 8vw, 11rem)",
                 lineHeight: 1.05,
                 letterSpacing: "-0.04em",
               }}
