@@ -35,6 +35,11 @@ export const navItems: NavItem[] = [
     headline: "Everything you need to\nstay connected and informed",
     children: [
       {
+        label: "Explore Hub",
+        href: ROUTES.hub,
+        description: "Overview of all Hub categories",
+      },
+      {
         label: "About ISM",
         href: ROUTES.about,
         description: "Our mission & story",

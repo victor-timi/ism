@@ -20,6 +20,9 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const hoverIntentRef = useRef<ReturnType<typeof setTimeout>>(null);
+  // Track whether a dropdown is "locked open" — when true, only click can switch
+  const isLockedRef = useRef(false);
   const { scrollY } = useScroll();
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
@@ -30,13 +33,51 @@ export function Navigation() {
     setScrolled(latest > 50);
   });
 
-  const openDropdown = (label: string) => {
+  const clearAllTimers = () => {
     if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    if (hoverIntentRef.current) clearTimeout(hoverIntentRef.current);
+  };
+
+  // Called on mouseEnter of dropdown trigger buttons
+  const handleTriggerHover = (label: string) => {
+    clearAllTimers();
+
+    // If a dropdown is already locked open, ignore hover on other triggers entirely.
+    // Only a sustained 1s hover will switch.
+    if (isLockedRef.current && activeDropdown !== label) {
+      hoverIntentRef.current = setTimeout(() => {
+        setActiveDropdown(label);
+      }, 1000);
+      return;
+    }
+
+    // If same dropdown, just keep it open (cancel any pending close)
+    if (activeDropdown === label) return;
+
+    // No dropdown open — open immediately on hover
     setActiveDropdown(label);
+    isLockedRef.current = true;
+  };
+
+  // Called on click of dropdown trigger buttons — always switches immediately
+  const handleTriggerClick = (label: string) => {
+    clearAllTimers();
+    if (activeDropdown === label) {
+      // Toggle off if clicking the same one
+      setActiveDropdown(null);
+      isLockedRef.current = false;
+    } else {
+      setActiveDropdown(label);
+      isLockedRef.current = true;
+    }
   };
 
   const closeDropdown = () => {
-    dropdownTimeoutRef.current = setTimeout(() => setActiveDropdown(null), 150);
+    if (hoverIntentRef.current) clearTimeout(hoverIntentRef.current);
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+      isLockedRef.current = false;
+    }, 150);
   };
 
   const activeItem = navItems.find((item) => item.label === activeDropdown && item.children);
@@ -86,7 +127,8 @@ export function Navigation() {
                 <button
                   key={item.label}
                   className={`nav-ripple flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium tracking-[0.15em] text-[var(--ism-fg)] uppercase ${isDropdownActive(item) ? "nav-active" : ""}`}
-                  onMouseEnter={() => openDropdown(item.label)}
+                  onMouseEnter={() => handleTriggerHover(item.label)}
+                  onClick={() => handleTriggerClick(item.label)}
                 >
                   {item.label}
                   <ChevronDown open={activeDropdown === item.label} />
@@ -108,7 +150,8 @@ export function Navigation() {
             {session ? (
               <button
                 className="flex items-center gap-1 text-xs font-medium tracking-[0.15em] text-[var(--ism-fg)] uppercase transition-opacity hover:opacity-70"
-                onMouseEnter={() => openDropdown("Account")}
+                onMouseEnter={() => handleTriggerHover("Account")}
+                onClick={() => handleTriggerClick("Account")}
               >
                 {session.user?.name?.split(" ")[0] || "Account"}
                 <ChevronDown open={activeDropdown === "Account"} />
@@ -153,7 +196,7 @@ export function Navigation() {
               exit={{ height: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onMouseEnter={() => {
-                if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+                clearAllTimers();
               }}
               onMouseLeave={closeDropdown}
             >
