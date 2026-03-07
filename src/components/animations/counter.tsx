@@ -24,7 +24,7 @@ export function Counter({
   className,
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: false, margin: "0px" });
+  const isInView = useInView(ref, { once: false, amount: 0.8 });
   const doneRef = useRef(false);
 
   useEffect(() => {
@@ -32,9 +32,9 @@ export function Counter({
     if (!el) return;
 
     if (!isInView) {
-      // Reset when leaving view so animation replays on re-entry
+      // Show final value when out of view so it doesn't flash "0"
       doneRef.current = false;
-      el.textContent = "0";
+      el.textContent = value;
       return;
     }
 

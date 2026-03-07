@@ -115,7 +115,7 @@ export function Hero() {
             <h1
               className="font-extrabold"
               style={{
-                fontSize: "clamp(2.5rem, 2rem + 8vw, 11rem)",
+                fontSize: "clamp(3.5rem, 2rem + 8vw, 11rem)",
                 lineHeight: 1.05,
                 letterSpacing: "-0.04em",
               }}
@@ -129,8 +129,20 @@ export function Hero() {
                 text="MOVEMENT"
                 delay={0.65}
                 className="text-[var(--ism-accent)]"
+                style={{ fontSize: "min(1em, calc((100vw - 48px) / 5.5))" }}
               />
             </h1>
+
+            {/* Full name */}
+            <motion.p
+              className="mt-3 text-xs font-semibold uppercase tracking-[0.3em] text-[var(--ism-fg-muted)] sm:text-sm lg:mt-4 lg:text-base"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-60px" }}
+              transition={{ duration: 0.6, ease, delay: 1 }}
+            >
+              International Students Movement
+            </motion.p>
 
             {/* Animated horizontal rule */}
             <motion.div
